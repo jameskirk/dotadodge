@@ -1,0 +1,22 @@
+apply plugin: 'edu.sc.seis.launch4j'
+
+launch4j {
+    mainClassName = "dotadodge.ui.main.DotaDodgeApplication"
+    //icon = 'icons/myApp.ico'
+}
+
+buildscript {
+    repositories {
+      maven {
+	url 'https://plugins.gradle.org/m2/'
+      }
+    }
+    dependencies {
+      classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.1'
+    }
+  }
+
+dependencies {
+    compile project(':dotadodge-core')
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}

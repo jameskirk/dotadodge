@@ -1,0 +1,18 @@
+# root project
+*.iml
+*.log
+
+.gradle/
+.idea/
+.settings/
+
+
+# subprojects
+*/.classpath
+*/.project
+*/*.iml
+*/.gradle/
+*/.settings/
+*/bin/
+*/build/
+*/*.log
