@@ -21,6 +21,7 @@ public class GlobalStatisticDao {
 
         Document doc;
      //   doc = Jsoup.connect("http://google.com").get();
+        //blabla
         return null;
     }
 
