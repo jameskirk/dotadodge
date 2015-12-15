@@ -177,7 +177,7 @@ public class ServerLogParser {
 	} else {
 	    pathToServerLog = System.getProperty("user.dir") + "\\" + filenameOfServerLog;
 	}*/
-	pathToServerLog = System.getProperty("user.dir") + "\\" + filenameOfServerLog; // TODO: determine real dota path
+	pathToServerLog = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota" + "\\" + filenameOfServerLog; // TODO: determine real dota path
 	
 	logger.debug("Path to server_log.txt:" + pathToServerLog);
 	return pathToServerLog;
