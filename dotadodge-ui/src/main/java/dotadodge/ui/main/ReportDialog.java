@@ -54,7 +54,8 @@ public class ReportDialog extends JDialog {
         	Report report = new Report();
         	report.setDescription(reportDescription.getText());
         	report.setStars(Integer.parseInt((String) stars.getSelectedItem()));
-        	customStatisticDao.reportPlayer(report, model.getSteamId(), "matchId");
+        	
+        	GuiceFactory.getInjector().getInstance(CustomStatisticDao.class).reportPlayer(report, model.getSteamId(), "matchId");
             }
         });
         panel.add(submitButton);

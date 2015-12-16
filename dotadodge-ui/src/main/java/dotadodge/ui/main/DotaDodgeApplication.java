@@ -43,6 +43,7 @@ public class DotaDodgeApplication extends JFrame {
     private void timer() {
 	while (true) {
 	    Match match = dotaDodge.getCurrentGameDao().getCurrentMatch();
+	    //GuiceFactory.getInjector().getInstance(CustomStatisticDao.class).reportPlayer(new Report(), "", "matchId");
 	    matchPanel.setModel(match);
 	    try {
 		Thread.sleep(1000);

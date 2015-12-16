@@ -19,7 +19,7 @@ public class CustomStatisticDao {
 	tx.begin();
 	
 	Match m = JPA.findAll(Match.class).get(JPA.findAll(Match.class).size() - 1);
-	Player p = JPA.em().find(Player.class, "229835061");
+	Player p = m.getPlayers().get(1);
 	for (Player pp: m.getPlayers()) {
 	    pp.getReports();
 	}
@@ -29,7 +29,7 @@ public class CustomStatisticDao {
 	p.getReports().add(r);
 	JPA.em().persist(r);
 	JPA.em().merge(p);
-	JPA.em().flush();
+	JPA.em().merge(m);
 	tx.commit();
 	System.out.println("REPORTED! ");
     }

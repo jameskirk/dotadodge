@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dotadodge.core.db.CurrentGameDao;
+import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Report;
 
@@ -28,6 +30,7 @@ public class MatchPanel extends JPanel {
     private List<JButton> reportButtons= new ArrayList<JButton>();
     
     private List<JLabel> reports = new ArrayList<JLabel>();
+    
     
     //private ReportDialog reportDialog;
 
@@ -51,6 +54,7 @@ public class MatchPanel extends JPanel {
 	            public void actionPerformed(ActionEvent e) {
 	        	Window frame = (Window)reportButton.getParent().getParent().getParent().getParent().getParent();
 	        	System.out.println("frame " + frame);
+	        	setModel(GuiceFactory.getInjector().getInstance(CurrentGameDao.class).getCurrentMatch());
 	                ReportDialog dialog = new ReportDialog(frame);
 	                dialog.setModel(model.getPlayers().get(k));
 	                
