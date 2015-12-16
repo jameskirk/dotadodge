@@ -55,6 +55,7 @@ public class MatchPanel extends JPanel {
 	        	Window frame = (Window)reportButton.getParent().getParent().getParent().getParent().getParent();
 	        	System.out.println("frame " + frame);
 	        	setModel(GuiceFactory.getInjector().getInstance(CurrentGameDao.class).getCurrentMatch());
+	        	System.out.println("Reports UI: " + getModel().getPlayers().get(1).getReports());
 	                ReportDialog dialog = new ReportDialog(frame);
 	                dialog.setModel(model.getPlayers().get(k));
 	                

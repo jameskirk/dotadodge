@@ -21,6 +21,7 @@ public class CurrentGameDao {
 	if (!inited) {
 	    initCurrentMatchInDB(currMatch);
 	    inited = true;
+	    System.out.println("DB inited");
 	}
 	
 //	EntityTransaction tx = JPA.em().getTransaction();
