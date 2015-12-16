@@ -22,6 +22,9 @@ public class Player {
     @OneToMany
     private List<Report> reports = new ArrayList<Report>();
     
+    public Player() {
+    }
+    
     public Player(String steamId) {
 	this.steamId = steamId;
     }

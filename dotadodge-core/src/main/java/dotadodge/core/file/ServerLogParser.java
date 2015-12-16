@@ -105,7 +105,7 @@ public class ServerLogParser {
 	    
 	    while(line != null) {
 		if (line.contains("loopback")) {
-		    logger.debug("game is finished");
+		    logger.trace("game is finished");
 		    return retVal;
 		}
 		if (line.contains("Lobby")) {
@@ -119,11 +119,11 @@ public class ServerLogParser {
 		    Calendar currentDate = Calendar.getInstance();
 		    currentDate.add(Calendar.HOUR, -2);
 		    if (dateInFile.before(currentDate.getTime())) {
-			logger.debug("date in line server_log.txt too old: "+ line.substring(0, 20));
+			logger.trace("date in line server_log.txt too old: "+ line.substring(0, 20));
 			return retVal;
 		    }
 		    
-		    logger.debug("Line in server_log.txt: " + line);
+		    logger.trace("Line in server_log.txt: " + line);
 		    
 		    for (String splittedLine: line.split(" ")) {
 			if (splittedLine.contains(":[U:")) { //splittedLine = 0:[U:1:140878476]
@@ -149,7 +149,7 @@ public class ServerLogParser {
 		throw new RuntimeException("no my steamId");
 	    }
 	    
-	    logger.debug("Parsed line in server_log.txt: " + retVal);
+	    logger.trace("Parsed line in server_log.txt: " + retVal);
 	    
 	    return retVal;
 	    
@@ -169,17 +169,9 @@ public class ServerLogParser {
     
     private String getPathToServiceLog() {
 	final String filenameOfServerLog = "server_log.txt";
-	String pathToServerLog = "";
+	String pathToServerLog = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota" + "\\" + filenameOfServerLog; // TODO: determine real dota path
 	
-	/*if (ConfigurationHelper.getInstance().getMode() == Mode.test) {
-	    File serverLogFileTest = FileUtils.getFile("src","test", "resources", filenameOfServerLog);
-	    pathToServerLog =  serverLogFileTest.getPath();
-	} else {
-	    pathToServerLog = System.getProperty("user.dir") + "\\" + filenameOfServerLog;
-	}*/
-	pathToServerLog = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota" + "\\" + filenameOfServerLog; // TODO: determine real dota path
-	
-	logger.debug("Path to server_log.txt:" + pathToServerLog);
+	logger.trace("Path to server_log.txt:" + pathToServerLog);
 	return pathToServerLog;
     }
 

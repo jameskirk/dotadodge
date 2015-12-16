@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Match {
@@ -19,7 +19,7 @@ public class Match {
     /** id from dotabuff **/
     private int id;
     
-    @OneToMany
+    @ManyToMany
     private List<Player> players = new ArrayList<Player>();
     
     public int getTemporaryId() {

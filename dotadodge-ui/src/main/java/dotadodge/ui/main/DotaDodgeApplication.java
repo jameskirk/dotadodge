@@ -36,18 +36,14 @@ public class DotaDodgeApplication extends JFrame {
         setVisible(true);
     }
     
+    private void initCore() {
+	dotaDodge.run();
+    }
+    
     private void timer() {
-	//dotaDodge.run();
 	while (true) {
 	    Match match = dotaDodge.getCurrentGameDao().getCurrentMatch();
-	    
-	    if (match.getPlayers().isEmpty()) {
-		matchPanel.getPlayers().forEach(e -> e.setText(""));
-	    } else {
-		for (int i = 0; i < match.getPlayers().size(); i++) {
-		    matchPanel.getPlayers().get(i).setText("Player " + (i + 1) + " : " + match.getPlayers().get(i).getSteamId());
-		}
-	    }
+	    matchPanel.setModel(match);
 	    try {
 		Thread.sleep(1000);
 	    } catch (InterruptedException e) {
@@ -66,6 +62,7 @@ public class DotaDodgeApplication extends JFrame {
                 
                 Thread threadCore = new Thread() {
         	    public void run() {
+        		main.initCore();
         		main.timer();
         	    };
         	};
