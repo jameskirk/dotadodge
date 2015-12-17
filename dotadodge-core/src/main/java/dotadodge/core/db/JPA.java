@@ -35,8 +35,13 @@ import dotadodge.core.misc.GuiceFactory;
 
 public class JPA {
     
+    private static EntityManager em;
+    
     public static EntityManager em() {
-	return GuiceFactory.getInjector().getInstance(EntityManager.class);
+	if (em == null) {
+	    em = GuiceFactory.getInjector().getInstance(EntityManager.class);
+	}
+	return em;
     }
     
     public static <T> T findById(Class<T> object, int id) {

@@ -28,9 +28,9 @@ public class DaoTest {
 	Report r = new Report();
 	r.setStars(1);
 	r.setDescription("noob");
-	m.getPlayers().add(new Player("123"));
-	m.getPlayers().add(new Player("124"));
-	m.getPlayers().add(new Player("125"));
+	m.getPlayers().add(new Player(123));
+	m.getPlayers().add(new Player(124));
+	m.getPlayers().add(new Player(125));
 	m.getPlayers().get(1).getReports().add(r);
 	m.getPlayers().get(1).getReports().add(new Report());
 	for (Player p : m.getPlayers()) {

@@ -1,6 +1,7 @@
 package dotadodge.core.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -22,6 +23,8 @@ public class Match {
     @ManyToMany
     private List<Player> players = new ArrayList<Player>();
     
+    private Date startDate;
+    
     public int getTemporaryId() {
         return temporaryId;
     }
@@ -42,6 +45,14 @@ public class Match {
         this.players = players;
     }
     
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
     @Override
     public String toString() {
 	StringBuilder string = new StringBuilder();

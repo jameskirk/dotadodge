@@ -1,35 +1,43 @@
 package dotadodge.core.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityTransaction;
 
-import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
 import dotadodge.core.model.Report;
 
 public class CustomStatisticDao {
     
-    public Player getPlayer(int id) {
-	// TODO
-	return null;
+    public List<Player> getPlayers(List<Integer> ids) {
+	List<Player> retVal = new ArrayList<Player>();
+	EntityTransaction tx = JPA.em().getTransaction();
+	tx.begin();
+	for (int id: ids) {
+	    Player p = JPA.findById(Player.class, id);
+	    if (p == null) {
+		JPA.em().persist(new Player(id));
+		p = JPA.findById(Player.class, id);
+	    }
+	    retVal.add(p);
+	}
+	tx.commit();
+	return retVal;
     }
     
-    public void reportPlayer(Report report, String toSteamId, String toMatchId) {
+    public void reportPlayer(Report report, int toSteamId, String toMatchId) {
 	
 	EntityTransaction tx = JPA.em().getTransaction();
 	tx.begin();
-	
-	Match m = JPA.findAll(Match.class).get(JPA.findAll(Match.class).size() - 1);
-	Player p = m.getPlayers().get(1);
-	for (Player pp: m.getPlayers()) {
-	    pp.getReports();
+	Player p = JPA.findById(Player.class, toSteamId);
+	if (p == null) {
+	    JPA.em().persist(new Player(toSteamId));
+	    p = JPA.findById(Player.class, toSteamId);
 	}
-	Report r = new Report();
-	r.setDescription("good");
-	r.setStars(5);
-	p.getReports().add(r);
-	JPA.em().persist(r);
+	p.getReports().add(report);
+	JPA.em().persist(report);
 	JPA.em().merge(p);
-	JPA.em().merge(m);
 	tx.commit();
 	System.out.println("REPORTED! ");
     }

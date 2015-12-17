@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.google.inject.Inject;
+
 import dotadodge.core.db.CustomStatisticDao;
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Player;
@@ -27,8 +29,6 @@ public class ReportDialog extends JDialog {
     private JTextArea reportDescription;
     
     private JButton submitButton;
-    
-    private CustomStatisticDao customStatisticDao = GuiceFactory.getInjector().getInstance(CustomStatisticDao.class);
     
     public ReportDialog(Window c) {
 	super(c);//(SwingUtilities.windowForComponent(c2));
@@ -50,12 +50,11 @@ public class ReportDialog extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-        	System.out.println("submit report");
         	Report report = new Report();
         	report.setDescription(reportDescription.getText());
         	report.setStars(Integer.parseInt((String) stars.getSelectedItem()));
-        	
         	GuiceFactory.getInjector().getInstance(CustomStatisticDao.class).reportPlayer(report, model.getSteamId(), "matchId");
+        	dispose();
             }
         });
         panel.add(submitButton);

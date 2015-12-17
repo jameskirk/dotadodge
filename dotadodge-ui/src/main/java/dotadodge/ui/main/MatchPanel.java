@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import dotadodge.core.db.CurrentGameDao;
-import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Report;
 
@@ -24,6 +22,8 @@ public class MatchPanel extends JPanel {
     private static final int PLAYERS_COUNT = 10;
     
     private Match model = new Match();
+    
+    private JLabel header = new JLabel("Loading...");
     
     private List<JLabel> players = new ArrayList<JLabel>();
     
@@ -36,17 +36,19 @@ public class MatchPanel extends JPanel {
 
     public MatchPanel() {
 	setLayout(new GridBagLayout());
+	add(header,  new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
+	            GridBagConstraints.NONE, new Insets(0, 60, 10, 15), 0, 0));
 	for (int i=0; i<PLAYERS_COUNT; i++) {
 	    // 1. nickname
 	    JLabel playerName = new JLabel("");
 	    players.add(playerName);
-	    add(playerName,  new GridBagConstraints(0, i, 1, 1, 0, 0, GridBagConstraints.WEST,
+	    add(playerName,  new GridBagConstraints(0, i+1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 	    
 	    // 2. button
 	    JButton reportButton = new JButton("Report");
 	    reportButton.setSize(4, 4);
-	    add(reportButton,  new GridBagConstraints(1, i, 1, 1, 0, 0, GridBagConstraints.WEST,
+	    add(reportButton,  new GridBagConstraints(1, i+1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 	    final int k = i;
 	    reportButton.addActionListener(new ActionListener() {
@@ -54,8 +56,6 @@ public class MatchPanel extends JPanel {
 	            public void actionPerformed(ActionEvent e) {
 	        	Window frame = (Window)reportButton.getParent().getParent().getParent().getParent().getParent();
 	        	System.out.println("frame " + frame);
-	        	setModel(GuiceFactory.getInjector().getInstance(CurrentGameDao.class).getCurrentMatch());
-	        	System.out.println("Reports UI: " + getModel().getPlayers().get(1).getReports());
 	                ReportDialog dialog = new ReportDialog(frame);
 	                dialog.setModel(model.getPlayers().get(k));
 	                
@@ -66,10 +66,11 @@ public class MatchPanel extends JPanel {
 	    // 3. last reports description
 	    JLabel report = new JLabel();
 	    reports.add(report);
-	    add(report,  new GridBagConstraints(2, i, 1, 1, 0, 0, GridBagConstraints.WEST,
+	    add(report,  new GridBagConstraints(2, i+1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 	}
 	setBorder(new EmptyBorder(10, 10, 10, 10));
+	reportButtons.forEach(e -> e.setVisible(false));
     }
     
     
@@ -80,9 +81,11 @@ public class MatchPanel extends JPanel {
 
     public void setModel(Match model) {
 	if (model == null || model.getPlayers().isEmpty()) {
+	    header.setText("Match not started");
 	    players.forEach(e -> e.setText(""));
-	    setVisible(false);
+	    reportButtons.forEach(e -> e.setVisible(false));
 	} else {
+	    header.setText("Current match:");
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
 		players.get(i).setText("Player " + (i + 1) + " : " + model.getPlayers().get(i).getSteamId());
 		String reportString = "";
@@ -91,7 +94,7 @@ public class MatchPanel extends JPanel {
 		}
 		reports.get(i).setText(reportString);
 	    }
-	    setVisible(true);
+	    reportButtons.forEach(e -> e.setVisible(true));
 	}
         this.model = model;
     }

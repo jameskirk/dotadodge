@@ -18,6 +18,7 @@ import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dotadodge.core.misc.Configuration;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
 
@@ -122,6 +123,7 @@ public class ServerLogParser {
 			logger.trace("date in line server_log.txt too old: "+ line.substring(0, 20));
 			return retVal;
 		    }
+		    retVal.setStartDate(dateInFile);
 		    
 		    logger.trace("Line in server_log.txt: " + line);
 		    
@@ -131,7 +133,7 @@ public class ServerLogParser {
 				    .replace("]", "")
 				    .replace(")", "");
 			    if (retVal.getPlayers().size() < 10) {
-    			    	Player player = new Player(steamId);
+    			    	Player player = new Player(Integer.parseInt(steamId));
     			    	retVal.getPlayers().add(player);
 			    } else {
 				mySteamId = steamId; // last (11th) splittedLine - mySteamId
@@ -169,7 +171,7 @@ public class ServerLogParser {
     
     private String getPathToServiceLog() {
 	final String filenameOfServerLog = "server_log.txt";
-	String pathToServerLog = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\dota 2 beta\\game\\dota" + "\\" + filenameOfServerLog; // TODO: determine real dota path
+	String pathToServerLog = Configuration.pathToDota + "\\" + filenameOfServerLog; // TODO: determine real dota path
 	
 	logger.trace("Path to server_log.txt:" + pathToServerLog);
 	return pathToServerLog;

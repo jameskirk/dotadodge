@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 public class Player {
     
     @Id
-    private String steamId;
+    private int steamId;
     
     private String name;
     
@@ -25,11 +25,11 @@ public class Player {
     public Player() {
     }
     
-    public Player(String steamId) {
+    public Player(int steamId) {
 	this.steamId = steamId;
     }
 
-    public String getSteamId() {
+    public int getSteamId() {
         return steamId;
     }
 
@@ -59,7 +59,7 @@ public class Player {
     
     @Override
     public String toString() {
-        return steamId;
+        return steamId + "";
     }
     
 }

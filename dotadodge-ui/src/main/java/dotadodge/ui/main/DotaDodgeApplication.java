@@ -1,13 +1,12 @@
 package dotadodge.ui.main;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.hibernate.criterion.MatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dotadodge.core.db.CurrentGameDao;
 import dotadodge.core.main.DotaDodge;
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.misc.StdOutErrLog;
@@ -45,11 +44,9 @@ public class DotaDodgeApplication extends JFrame {
     private void timer() {
 	while (true) {
 	    Match match = dotaDodge.getCurrentGameDao().getCurrentMatch();
-	    //GuiceFactory.getInjector().getInstance(CustomStatisticDao.class).reportPlayer(new Report(), "", "matchId");
 	    matchPanel.setModel(match);
-	    System.out.println("Reports from TIMER: " + matchPanel.getModel().getPlayers().get(1).getReports());
 	    try {
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }

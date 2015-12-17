@@ -15,7 +15,7 @@ public class Report {
     
     private String description;
     
-    private String bySteamId;
+    private int bySteamId;
     
     private String toMatchId;
     
@@ -39,11 +39,11 @@ public class Report {
         this.description = description;
     }
     
-    public String getBySteamId() {
+    public int getBySteamId() {
         return bySteamId;
     }
 
-    public void setBySteamId(String bySteamId) {
+    public void setBySteamId(int bySteamId) {
         this.bySteamId = bySteamId;
     }
 
