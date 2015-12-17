@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityTransaction;
-
 import com.google.inject.Inject;
 
 import dotadodge.core.file.ServerLogParser;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
-import dotadodge.core.model.Report;
 
 public class CurrentGameDao {
     

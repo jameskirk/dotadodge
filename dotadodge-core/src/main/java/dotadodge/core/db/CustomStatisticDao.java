@@ -17,8 +17,7 @@ public class CustomStatisticDao {
 	for (int id: ids) {
 	    Player p = JPA.findById(Player.class, id);
 	    if (p == null) {
-		JPA.em().persist(new Player(id));
-		p = JPA.findById(Player.class, id);
+		p = new Player(id);
 	    }
 	    retVal.add(p);
 	}

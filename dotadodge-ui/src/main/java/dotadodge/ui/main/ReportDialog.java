@@ -11,8 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.google.inject.Inject;
-
 import dotadodge.core.db.CustomStatisticDao;
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Player;

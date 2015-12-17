@@ -2,6 +2,7 @@ package dotadodge.core.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dotadodge.core.misc.Configuration;
+import dotadodge.core.misc.WinRegistry;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
 
@@ -28,6 +30,11 @@ public class ServerLogParser {
     
     @Deprecated
     private Match currentMatch;
+    
+    
+    public ServerLogParser() {
+	logger.debug("Path to server_log.txt: " + getPathToServiceLog());
+    }
     
     @Deprecated
     public void parseForever() {
@@ -171,9 +178,15 @@ public class ServerLogParser {
     
     private String getPathToServiceLog() {
 	final String filenameOfServerLog = "server_log.txt";
-	String pathToServerLog = Configuration.pathToDota + "\\" + filenameOfServerLog; // TODO: determine real dota path
-	
-	logger.trace("Path to server_log.txt:" + pathToServerLog);
+	String pathToSteam;
+	try {
+	    pathToSteam = WinRegistry.readString(WinRegistry.HKEY_CURRENT_USER, "Software\\Valve\\Steam", "SteamPath");
+	    pathToSteam = pathToSteam.replace("/", "\\");
+	} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+	    e.printStackTrace();
+	    throw new RuntimeException(e);
+	}
+	String pathToServerLog = pathToSteam + "\\" + Configuration.pathFromSteamToDota + "\\" + filenameOfServerLog; // TODO: determine real dota path
 	return pathToServerLog;
     }
 

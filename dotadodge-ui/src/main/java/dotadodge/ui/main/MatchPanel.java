@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import dotadodge.core.model.Match;
@@ -31,7 +32,6 @@ public class MatchPanel extends JPanel {
     
     private List<JLabel> reports = new ArrayList<JLabel>();
     
-    
     //private ReportDialog reportDialog;
 
     public MatchPanel() {
@@ -50,14 +50,14 @@ public class MatchPanel extends JPanel {
 	    reportButton.setSize(4, 4);
 	    add(reportButton,  new GridBagConstraints(1, i+1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-	    final int k = i;
+	    final int iFinal = i;
+	    MatchPanel thiz = this;
 	    reportButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	        	Window frame = (Window)reportButton.getParent().getParent().getParent().getParent().getParent();
-	        	System.out.println("frame " + frame);
+	        	Window frame = SwingUtilities.getWindowAncestor(thiz);
 	                ReportDialog dialog = new ReportDialog(frame);
-	                dialog.setModel(model.getPlayers().get(k));
+	                dialog.setModel(model.getPlayers().get(iFinal));
 	                
 	            }
 	        });
