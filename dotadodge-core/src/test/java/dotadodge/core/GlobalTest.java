@@ -1,8 +1,7 @@
 package dotadodge.core;
 
 import com.google.inject.Injector;
-import dotadodge.core.db.ApplicationInitializer;
-import dotadodge.core.db.GlobalStatisticDao;
+import dotadodge.core.db.DotabuffGlobalStatisticDaoImpl;
 import dotadodge.core.misc.GuiceFactory;
 import org.junit.Test;
 
@@ -18,7 +17,7 @@ public class GlobalTest {
     public void test() throws IOException {
 
         Injector injector = GuiceFactory.getInjector();
-        GlobalStatisticDao globalStatisticDao = injector.getInstance(GlobalStatisticDao.class);
+        DotabuffGlobalStatisticDaoImpl globalStatisticDao = injector.getInstance(DotabuffGlobalStatisticDaoImpl.class);
         List<Integer> ids = new ArrayList<>();
         ids.add(49716582);
         ids.add(186782126);
