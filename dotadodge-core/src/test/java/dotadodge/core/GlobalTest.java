@@ -24,7 +24,7 @@ public class GlobalTest {
         ids.add(71146225);
         ids.add(110645196);
         ids.add(26559018);
-        List<String> blabla = new ArrayList<>(globalStatisticDao.getWinRate(ids));
+        List<String> blabla = new ArrayList<>(globalStatisticDao.getLastNickName(ids));
         System.out.println(blabla);
     }
 }
