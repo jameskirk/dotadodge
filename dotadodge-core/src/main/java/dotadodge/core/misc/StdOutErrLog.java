@@ -17,7 +17,7 @@ public class StdOutErrLog {
     public static PrintStream createLoggingProxy(final PrintStream realPrintStream) {
         return new PrintStream(realPrintStream) {
             public void print(final String string) {
-                realPrintStream.print(string);
+                //realPrintStream.print(string); // commented because we use log4j ConsoleAppender
                 logger.info(string);
             }
         };
