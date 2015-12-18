@@ -80,7 +80,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
         List<PlayerGlobalDetails> playerGlobalDetailses = new ArrayList<>();
         for (Integer id : ids){
             try {
-                playerGlobalDetailses.add(new PlayerGlobalDetails(id, getLastNickName(id),getWinRate(id)));
+                playerGlobalDetailses.add(new PlayerGlobalDetails(id, getWinRate(id), getLastNickName(id)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

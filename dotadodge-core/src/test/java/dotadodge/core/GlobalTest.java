@@ -27,9 +27,10 @@ public class GlobalTest {
         ids.add(26559018);
         List<PlayerGlobalDetails> blabla = new ArrayList<>(globalStatisticDao.getPlayerStats(ids));
         for (PlayerGlobalDetails bla : blabla){
-            System.out.println(bla.getSteamId());
             System.out.println(bla.getNickName());
+            System.out.println(bla.getSteamId());
             System.out.println(bla.getWinRate());
+            System.out.println();
 
         }
 
