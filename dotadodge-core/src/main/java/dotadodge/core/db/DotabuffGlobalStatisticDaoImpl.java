@@ -27,12 +27,12 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
         return null;
     }
 
-    public List<String> getWinRate(List<Integer> id) throws IOException {
+    public String getWinRate(Integer id) throws IOException {
         System.setProperty("http.proxyHost", "bk-proxy.de.ad.tmo");
         System.setProperty("http.proxyPort", "3129");
         List<String> winRatePlayers = new ArrayList();
-        for (int ide : id) {
-            String url = new String(genReqString(WINRATE_REQ, ide));
+
+            String url = new String(genReqString(WINRATE_REQ, id));
         //    String url = new String("http://www.dotabuff.com/players/");
             //blablabla
             Document doc = Jsoup.connect(url)
@@ -43,18 +43,17 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
                     .get();
             for (Element e : doc.select(WINRATE_SPAN_NAME)) {
                 winRatePlayers.add(e.text());
-            }
         }
 
-        return winRatePlayers;
+        return winRatePlayers.get(0);
     }
 
-    public List<String> getLastNickName(List<Integer> id) throws IOException {
+    public String getLastNickName(Integer id) throws IOException {
         System.setProperty("http.proxyHost", "bk-proxy.de.ad.tmo");
         System.setProperty("http.proxyPort", "3129");
         List<String> nickNamePlayers = new ArrayList();
-        for (int ide : id) {
-            String url = new String(genReqString("", ide));
+
+            String url = new String(genReqString("", id));
             Document doc = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .referrer("http://www.google.com")
@@ -64,20 +63,29 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
             for (Element e : doc.select("title")) {
                 nickNamePlayers.add(e.text().split(" - ")[0]);
             }
-        }
 
-        return nickNamePlayers;
+
+        return nickNamePlayers.get(0);
     }
 
 
 
-    public PlayersInPartyInfo getPlayersInPartyInfo(List<Integer> id) {
+    public PlayersInPartyInfo getPlayersInPartyInfo(List<Integer> ids) {
         //TODO: armad
         return null;
     }
 
     @Override
-    public List<PlayerGlobalDetails> getPlayerStats(List<Integer> id) {
-        return null;
+    public List<PlayerGlobalDetails> getPlayerStats(List<Integer> ids)  {
+        List<PlayerGlobalDetails> playerGlobalDetailses = new ArrayList<>();
+        for (Integer id : ids){
+            try {
+                playerGlobalDetailses.add(new PlayerGlobalDetails(id, getLastNickName(id),getWinRate(id)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return playerGlobalDetailses;
     }
 }

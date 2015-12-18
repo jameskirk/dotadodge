@@ -3,6 +3,7 @@ package dotadodge.core;
 import com.google.inject.Injector;
 import dotadodge.core.db.DotabuffGlobalStatisticDaoImpl;
 import dotadodge.core.misc.GuiceFactory;
+import dotadodge.core.model.external.PlayerGlobalDetails;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,7 +25,13 @@ public class GlobalTest {
         ids.add(71146225);
         ids.add(110645196);
         ids.add(26559018);
-        List<String> blabla = new ArrayList<>(globalStatisticDao.getLastNickName(ids));
-        System.out.println(blabla);
+        List<PlayerGlobalDetails> blabla = new ArrayList<>(globalStatisticDao.getPlayerStats(ids));
+        for (PlayerGlobalDetails bla : blabla){
+            System.out.println(bla.getSteamId());
+            System.out.println(bla.getNickName());
+            System.out.println(bla.getWinRate());
+
+        }
+
     }
 }
