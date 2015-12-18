@@ -31,23 +31,21 @@ public class ServerLogParser {
     }
     
     public Match parse() {
-	currentMatch = parseStateless();
-	if (previousMatchDate == null || !previousMatchDate.equals(currentMatch.getStartDate())) { // not init or new match (new date)
-	    previousMatchDate = currentMatch.getStartDate();
-	}
-	return currentMatch;
+	return parseStateless();
     }
     
-    public boolean isPreviousAndCurrentMatchIsNotEqual() {
-	boolean retVal = false;
-	boolean forceCallStatistic = true;
-	if (forceCallStatistic || previousMatchDate == null || !previousMatchDate.equals(currentMatch.getStartDate())) { // not init or new match (new date)
-	    retVal = true;
-	}
-	return retVal;
+    public boolean isPreviousAndCurrentMatchIsNotEqual(Match parsedMatch) {
+	return currentMatch == null || !currentMatch.getStartDate().equals(parsedMatch.getStartDate()); // not init or new match (new date)
     }
     
-    
+    public Match getCurrentMatch() {
+        return currentMatch;
+    }
+
+    public void setCurrentMatch(Match currentMatch) {
+        this.currentMatch = currentMatch;
+    }
+
     private Match parseStateless() {
 	ReversedLinesFileReader reader = null;
 	try {
