@@ -10,6 +10,7 @@ import dotadodge.core.db.GlobalStatisticDao;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
 import dotadodge.core.model.Report;
+import dotadodge.core.model.external.PlayerGlobalDetails;
 
 public class DotaDodgeServiceImpl implements DotaDodgeService {
     
@@ -22,6 +23,15 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
     @Override
     public List<Player> getPlayers(List<Integer> playersId) {
 	List<Player> retVal = customStatisticDao.getPlayers(playersId);
+	List<PlayerGlobalDetails> playersDetails = globalStatisticDao.getPlayerStats(playersId);
+	for (Player player : retVal) {
+	    for (PlayerGlobalDetails playerDetails : playersDetails) {
+		if (player.getSteamId() == playerDetails.getSteamId()) {
+		    player.setPlayerDetails(playerDetails);
+		    break;
+		}
+	    }
+	}
 	// TODO add global statistic
 	return retVal;
     }

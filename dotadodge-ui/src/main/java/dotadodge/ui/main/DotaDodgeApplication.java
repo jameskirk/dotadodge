@@ -45,7 +45,7 @@ public class DotaDodgeApplication extends JFrame {
 	    Match match = dotaDodge.getCurrentMatch();
 	    matchPanel.setModel(match);
 	    try {
-		Thread.sleep(1000);
+		Thread.sleep(100*1000);
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }

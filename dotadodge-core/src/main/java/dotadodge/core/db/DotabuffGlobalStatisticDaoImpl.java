@@ -4,14 +4,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dotadodge.core.file.ServerLogParser;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.external.PlayerGlobalDetails;
 import dotadodge.core.model.external.PlayersInPartyInfo;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
+    
+    private final Logger logger = LoggerFactory.getLogger(DotabuffGlobalStatisticDaoImpl.class);
 
     private String WINRATE_REQ = "/matches?date=3month";
     private String WINRATE_SPAN_NAME = "span.color-stat-win";
@@ -41,9 +47,15 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
                     .timeout(2000)
                     .followRedirects(true)
                     .get();
-            for (Element e : doc.select(WINRATE_SPAN_NAME)) {
-                winRatePlayers.add(e.text());
-        }
+            if (!doc.select(WINRATE_SPAN_NAME).isEmpty()) {
+        	for (Element e : doc.select(WINRATE_SPAN_NAME)) {
+                    winRatePlayers.add(e.text());
+        	}
+            } else {
+        	winRatePlayers.add("Unknown");
+        	logger.error("no found winrate for player " + id);
+            }
+            
 
         return winRatePlayers.get(0);
     }
