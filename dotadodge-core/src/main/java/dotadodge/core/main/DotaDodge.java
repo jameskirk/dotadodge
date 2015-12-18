@@ -1,10 +1,15 @@
 package dotadodge.core.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.inject.Inject;
 
 import dotadodge.core.db.ApplicationInitializer;
-import dotadodge.core.db.CurrentGameDao;
-import dotadodge.core.db.CustomStatisticDao;
+import dotadodge.core.file.ServerLogParser;
+import dotadodge.core.model.Match;
+import dotadodge.core.model.Player;
+import dotadodge.core.service.DotaDodgeService;
 
 public class DotaDodge {
     
@@ -12,10 +17,10 @@ public class DotaDodge {
     private ApplicationInitializer applicationInitializer;
     
     @Inject
-    private CustomStatisticDao customStatisticDao;
+    private ServerLogParser serverLogParser;
     
     @Inject
-    private CurrentGameDao currentGameDao;
+    private DotaDodgeService dotaDodgeService;
     
     public DotaDodge() {
     }
@@ -28,16 +33,23 @@ public class DotaDodge {
 	//TODO
     }
     
-    public CustomStatisticDao getCustomStatisticDao() {
-        return customStatisticDao;
+    public Match getCurrentMatch() {
+	Match match = serverLogParser.parse();
+	if (serverLogParser.isPreviousAndCurrentMatchIsNotEqual()) {
+	    List<Integer> playersIds = new ArrayList<Integer>();
+	    match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
+	    List<Player> players = dotaDodgeService.getPlayers(playersIds);
+	    match.setPlayers(players);
+	}
+	return match;
     }
-
+    
     public ApplicationInitializer getApplicationInitializer() {
         return applicationInitializer;
     }
 
-    public CurrentGameDao getCurrentGameDao() {
-        return currentGameDao;
+    public DotaDodgeService getDotaDodgeService() {
+        return dotaDodgeService;
     }
     
 }

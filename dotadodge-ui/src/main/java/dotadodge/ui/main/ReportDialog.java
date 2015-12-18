@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import dotadodge.core.db.CustomStatisticDao;
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Player;
 import dotadodge.core.model.Report;
+import dotadodge.core.service.DotaDodgeService;
 
 public class ReportDialog extends JDialog {
     
@@ -27,6 +27,8 @@ public class ReportDialog extends JDialog {
     private JTextArea reportDescription;
     
     private JButton submitButton;
+    
+    private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
     
     public ReportDialog(Window c) {
 	super(c);//(SwingUtilities.windowForComponent(c2));
@@ -51,7 +53,7 @@ public class ReportDialog extends JDialog {
         	Report report = new Report();
         	report.setDescription(reportDescription.getText());
         	report.setStars(Integer.parseInt((String) stars.getSelectedItem()));
-        	GuiceFactory.getInjector().getInstance(CustomStatisticDao.class).reportPlayer(report, model.getSteamId(), "matchId");
+        	dotaDodgeService.report(report, model.getSteamId(), null);
         	dispose();
             }
         });

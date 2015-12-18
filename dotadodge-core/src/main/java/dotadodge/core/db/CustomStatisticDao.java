@@ -1,6 +1,7 @@
 package dotadodge.core.db;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityTransaction;
@@ -25,7 +26,7 @@ public class CustomStatisticDao {
 	return retVal;
     }
     
-    public void reportPlayer(Report report, int toSteamId, String toMatchId) {
+    public void reportPlayer(Report report, int toSteamId, Date toMatchDate) {
 	
 	EntityTransaction tx = JPA.em().getTransaction();
 	tx.begin();

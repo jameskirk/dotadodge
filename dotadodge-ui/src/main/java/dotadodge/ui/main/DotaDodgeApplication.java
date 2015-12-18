@@ -42,7 +42,7 @@ public class DotaDodgeApplication extends JFrame {
     
     private void timer() {
 	while (true) {
-	    Match match = dotaDodge.getCurrentGameDao().getCurrentMatch();
+	    Match match = dotaDodge.getCurrentMatch();
 	    matchPanel.setModel(match);
 	    try {
 		Thread.sleep(1000);

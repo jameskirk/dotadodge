@@ -14,7 +14,7 @@ public class GuiceFactory {
     
     public static Injector getInjector() {
 	if (injector == null) {
-	    injector = Guice.createInjector(new JpaPersistModule(PU_NAME_PROD));
+	    injector = Guice.createInjector(new JpaPersistModule(PU_NAME_PROD), new CoreModule());
 	}
         return injector;
     }

@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import dotadodge.core.model.external.PlayerGlobalDetails;
 
 @Entity
 public class Player {
@@ -21,6 +24,9 @@ public class Player {
     
     @OneToMany
     private List<Report> reports = new ArrayList<Report>();
+    
+    @Transient
+    private PlayerGlobalDetails playerDetails;
     
     public Player() {
     }
@@ -57,6 +63,14 @@ public class Player {
         this.reports = reports;
     }
     
+    public PlayerGlobalDetails getPlayerDetails() {
+        return playerDetails;
+    }
+
+    public void setPlayerDetails(PlayerGlobalDetails playerDetails) {
+        this.playerDetails = playerDetails;
+    }
+
     @Override
     public String toString() {
         return steamId + "";

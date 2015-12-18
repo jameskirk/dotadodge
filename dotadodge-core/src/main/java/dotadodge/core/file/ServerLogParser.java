@@ -3,13 +3,6 @@ package dotadodge.core.file;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,75 +21,34 @@ public class ServerLogParser {
     
     private final Logger logger = LoggerFactory.getLogger(ServerLogParser.class);
     
-    @Deprecated
     private Match currentMatch;
+    
+    private Date previousMatchDate;
     
     
     public ServerLogParser() {
 	logger.debug("Path to server_log.txt: " + getPathToServiceLog());
     }
     
-    @Deprecated
-    public void parseForever() {
-	currentMatch = parseOneTime();
-	try {
-	    String dirServerLog = getPathToServiceLog().substring(0, getPathToServiceLog().lastIndexOf("/"));
-	    
-	    WatchService watcher = FileSystems.getDefault().newWatchService();
-	    Path dir = Paths.get(dirServerLog);
-	    dir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
-	    while (true) {
-		    WatchKey key;
-		    try {
-		        // wait for a key to be available
-			
-		        key = watcher.take();
-		    } catch (InterruptedException e) {
-		        throw new RuntimeException(e);
-		    }
-		    
-		 
-		    for (WatchEvent<?> event : key.pollEvents()) {
-		        // get event type
-		        WatchEvent.Kind<?> kind = event.kind();
-		 
-		        // get file name
-		        @SuppressWarnings("unchecked")
-		        WatchEvent<Path> ev = (WatchEvent<Path>) event;
-		        Path fileName = ev.context();
-		 
-		        System.out.println(kind.name() + ": " + fileName);
-		 
-		        if (kind == StandardWatchEventKinds.OVERFLOW) {
-		            continue;
-		        } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
-		            try {
-				Thread.sleep(100);
-			    } catch (InterruptedException e) {
-				e.printStackTrace();
-			    }
-		            currentMatch = parseOneTime();
-		        }
-		    }
-		 
-		    // IMPORTANT: The key must be reset after processed
-		    boolean valid = key.reset();
-		    if (!valid) {
-			System.out.println("reset");
-		        break;
-		    }
-		    try {
-			Thread.sleep(200);
-		    } catch (InterruptedException e) {
-			e.printStackTrace();
-		    }
-		}
-	} catch (IOException e) {
-	    throw new RuntimeException(e);
+    public Match parse() {
+	currentMatch = parseStateless();
+	if (previousMatchDate == null || !previousMatchDate.equals(currentMatch.getStartDate())) { // not init or new match (new date)
+	    previousMatchDate = currentMatch.getStartDate();
 	}
+	return currentMatch;
     }
     
-    public Match parseOneTime() {
+    public boolean isPreviousAndCurrentMatchIsNotEqual() {
+	boolean retVal = false;
+	boolean forceCallStatistic = true;
+	if (forceCallStatistic || previousMatchDate == null || !previousMatchDate.equals(currentMatch.getStartDate())) { // not init or new match (new date)
+	    retVal = true;
+	}
+	return retVal;
+    }
+    
+    
+    private Match parseStateless() {
 	ReversedLinesFileReader reader = null;
 	try {
 	    Match retVal = new Match();
