@@ -32,7 +32,6 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 		}
 	    }
 	}
-	// TODO add global statistic
 	return retVal;
     }
 

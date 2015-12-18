@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dotadodge.core.file.ServerLogParser;
+import dotadodge.core.misc.Configuration;
+import dotadodge.core.misc.Configuration.ConfigurationKey;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.external.PlayerGlobalDetails;
 import dotadodge.core.model.external.PlayersInPartyInfo;
@@ -34,8 +36,11 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
     }
 
     public String getWinRate(Integer id) throws IOException {
-        System.setProperty("http.proxyHost", "bk-proxy.de.ad.tmo");
-        System.setProperty("http.proxyPort", "3129");
+	if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
+	    System.setProperty("http.proxyHost", Configuration.getInstance().read(ConfigurationKey.PROXY));
+	        System.setProperty("http.proxyPort", Configuration.getInstance().read(ConfigurationKey.PROXY_PORT));
+	}
+        
         List<String> winRatePlayers = new ArrayList();
 
             String url = new String(genReqString(WINRATE_REQ, id));

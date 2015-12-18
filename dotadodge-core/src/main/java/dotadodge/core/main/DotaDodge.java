@@ -44,10 +44,6 @@ public class DotaDodge {
 	return match;
     }
     
-    public ApplicationInitializer getApplicationInitializer() {
-        return applicationInitializer;
-    }
-
     public DotaDodgeService getDotaDodgeService() {
         return dotaDodgeService;
     }
