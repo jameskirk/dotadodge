@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import dotadodge.core.db.ApplicationInitializer;
+import dotadodge.core.file.MatchNotStartedException;
 import dotadodge.core.file.ServerLogParser;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Player;
@@ -38,18 +39,17 @@ public class DotaDodge {
 	//TODO
     }
     
-    public Match getCurrentMatch() {
+    public Match getCurrentMatch() throws MatchNotStartedException {
 	Match match = serverLogParser.parse();
 	
-	if (serverLogParser.isPreviousAndCurrentMatchIsNotEqual(match)) {
+	if (serverLogParser.isNewMatch()) {
 	    logger.debug("loading players from service");
-	    serverLogParser.setCurrentMatch(match);
 	    List<Integer> playersIds = new ArrayList<Integer>();
 	    match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
 	    List<Player> players = dotaDodgeService.getPlayers(playersIds);
 	    match.setPlayers(players);
 	}
-	return serverLogParser.getCurrentMatch();
+	return match;
     }
     
     public DotaDodgeService getDotaDodgeService() {

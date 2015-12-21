@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.slf4j.Logger;
@@ -20,33 +23,47 @@ import dotadodge.core.model.Player;
 public class ServerLogParser {
     
     private final Logger logger = LoggerFactory.getLogger(ServerLogParser.class);
-    
-    private Match currentMatch;
-    
-    private Date previousMatchDate;
-    
+    /** queue with 2 last matches, it is needed for method isNewMatch() **/
+    private Queue<Match> parsedMatches = new LinkedList<Match>();
     
     public ServerLogParser() {
 	logger.debug("Path to server_log.txt: " + getPathToServiceLog());
     }
     
-    public Match parse() {
-	return parseStateless();
+    public Match parse() throws MatchNotStartedException {
+	Match match = parseStateless();
+	if (parsedMatches.size() == 0) {
+	    parsedMatches.add(match);
+	} else if (parsedMatches.size() == 1) {
+	    parsedMatches.add(match);
+	} else if (parsedMatches.size() == 2) {
+	    parsedMatches.poll();
+	    parsedMatches.add(match);
+	}
+	return match;
     }
     
-    public boolean isPreviousAndCurrentMatchIsNotEqual(Match parsedMatch) {
-	return currentMatch == null || !currentMatch.getStartDate().equals(parsedMatch.getStartDate()); // not init or new match (new date)
+    public boolean isNewMatch() {
+	if (parsedMatches.size() == 1) {
+	    return true;
+	} else if (parsedMatches.size() == 2) {
+	    Iterator<Match> iter = parsedMatches.iterator();
+	    Match headMatch = null;
+	    Match tailMatch = null;
+	    while (iter.hasNext()) {
+		Match match = iter.next();
+		if (headMatch == null) {
+		    headMatch = match;
+		} else {
+		    tailMatch = match;
+		}
+	    }
+	    return !headMatch.getStartDate().equals(tailMatch.getStartDate());
+	}
+	return false;
     }
     
-    public Match getCurrentMatch() {
-        return currentMatch;
-    }
-
-    public void setCurrentMatch(Match currentMatch) {
-        this.currentMatch = currentMatch;
-    }
-
-    private Match parseStateless() {
+    private Match parseStateless() throws MatchNotStartedException {
 	ReversedLinesFileReader reader = null;
 	try {
 	    Match retVal = new Match();
@@ -64,7 +81,7 @@ public class ServerLogParser {
 	    while(line != null) {
 		if (line.contains("loopback")) {
 		    logger.trace("game is finished");
-		    return retVal;
+		    throw new MatchNotStartedException();
 		}
 		if (line.contains("Lobby")) {
 		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy - HH:mm:SS");
@@ -78,7 +95,7 @@ public class ServerLogParser {
 		    currentDate.add(Calendar.HOUR, -2);
 		    if (dateInFile.before(currentDate.getTime())) {
 			logger.trace("date in line server_log.txt too old: "+ line.substring(0, 20));
-			return retVal;
+			throw new MatchNotStartedException();
 		    }
 		    retVal.setStartDate(dateInFile);
 		    

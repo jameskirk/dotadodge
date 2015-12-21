@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dotadodge.core.file.MatchNotStartedException;
 import dotadodge.core.main.DotaDodge;
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.misc.StdOutErrLog;
@@ -42,8 +43,16 @@ public class DotaDodgeApplication extends JFrame {
     
     private void timer() {
 	while (true) {
-	    Match match = dotaDodge.getCurrentMatch();
-	    matchPanel.setModel(match);
+	    Match currentMatch;
+	    Match previousMatch = matchPanel.getModel();
+	    try {
+		currentMatch = dotaDodge.getCurrentMatch();
+		if (previousMatch == null || !(currentMatch.getStartDate().equals(previousMatch.getStartDate())))
+		matchPanel.setModel(currentMatch);
+	    } catch (MatchNotStartedException e1) {
+		matchPanel.setModel(new Match());
+		logger.trace("match not started yet");
+	    }
 	    try {
 		Thread.sleep(1000);
 	    } catch (InterruptedException e) {

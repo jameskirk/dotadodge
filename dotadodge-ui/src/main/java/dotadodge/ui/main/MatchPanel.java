@@ -87,13 +87,16 @@ public class MatchPanel extends JPanel {
 	} else {
 	    header.setText("Current match:");
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
-		String name = model.getPlayers().get(i).getPlayerDetails().getNickName();
-		if (name == null || name.isEmpty()) {
-		    name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
+		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
+		if (model.getPlayers().get(i).getPlayerDetails() != null) {
+		    name = model.getPlayers().get(i).getPlayerDetails().getNickName();
+		    if (name == null || name.isEmpty()) {
+			name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
+		    }
+		    String winrate = model.getPlayers().get(i).getPlayerDetails().getWinRate();
+		    name += " " + winrate;
 		}
-		String winrate = model.getPlayers().get(i).getPlayerDetails().getWinRate();
-		name += " " + winrate;
-		
+
 		players.get(i).setText("Player " + (i + 1) + " : " + name);
 		String reportString = "";
 		for (Report r: model.getPlayers().get(i).getReports()) {
