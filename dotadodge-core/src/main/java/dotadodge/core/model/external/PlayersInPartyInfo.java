@@ -1,5 +1,11 @@
 package dotadodge.core.model.external;
 
-public class PlayersInPartyInfo {
+import java.util.List;
 
+public class PlayersInPartyInfo {
+    private List<Integer> friendsId;
+
+    public PlayersInPartyInfo(List<Integer> friendsId) {
+        this.friendsId = friendsId;
+    }
 }
