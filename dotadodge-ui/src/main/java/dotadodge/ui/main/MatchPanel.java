@@ -3,7 +3,6 @@ package dotadodge.ui.main;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import dotadodge.core.model.Match;
@@ -40,7 +38,7 @@ public class MatchPanel extends JPanel {
 	            GridBagConstraints.NONE, new Insets(0, 60, 10, 15), 0, 0));
 	for (int i=0; i<PLAYERS_COUNT; i++) {
 	    // 1. nickname
-	    JLabel playerName = new JLabel("");
+	    JLabel playerName = new JLabel();
 	    players.add(playerName);
 	    add(playerName,  new GridBagConstraints(0, i+1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
@@ -55,8 +53,7 @@ public class MatchPanel extends JPanel {
 	    reportButton.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	        	Window frame = SwingUtilities.getWindowAncestor(thiz);
-	                ReportDialog dialog = new ReportDialog(frame);
+	                ReportDialog dialog = new ReportDialog(thiz);
 	                dialog.setModel(model.getPlayers().get(iFinal));
 	                
 	            }

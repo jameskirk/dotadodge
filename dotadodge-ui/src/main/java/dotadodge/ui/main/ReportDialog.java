@@ -1,6 +1,5 @@
 package dotadodge.ui.main;
 
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Player;
@@ -19,6 +19,8 @@ import dotadodge.core.service.DotaDodgeService;
 public class ReportDialog extends JDialog {
     
     private Player model;
+    
+    private MatchPanel parentComponent;
     
     private JLabel headerLabel;
     
@@ -30,8 +32,9 @@ public class ReportDialog extends JDialog {
     
     private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
     
-    public ReportDialog(Window c) {
-	super(c);//(SwingUtilities.windowForComponent(c2));
+    public ReportDialog(MatchPanel c) {
+	super(SwingUtilities.windowForComponent(c));
+	parentComponent = c;
 	setSize(300, 200);
 	setLocationRelativeTo(c);
         setVisible(true);
@@ -54,6 +57,8 @@ public class ReportDialog extends JDialog {
         	report.setDescription(reportDescription.getText());
         	report.setStars(Integer.parseInt((String) stars.getSelectedItem()));
         	dotaDodgeService.report(report, model.getSteamId(), null);
+        	model.getReports().add(report);
+        	parentComponent.setModel(parentComponent.getModel());
         	dispose();
             }
         });
