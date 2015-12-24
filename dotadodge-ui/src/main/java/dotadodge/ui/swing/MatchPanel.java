@@ -1,4 +1,4 @@
-package dotadodge.ui.main;
+package dotadodge.ui.swing;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

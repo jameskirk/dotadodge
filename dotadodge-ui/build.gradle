@@ -1,7 +1,7 @@
 apply plugin: 'edu.sc.seis.launch4j'
 
 launch4j {
-    mainClassName = "dotadodge.ui.main.DotaDodgeApplication"
+    mainClassName = "dotadodge.ui.swing.DotaDodgeApplication"
     //icon = 'icons/myApp.ico'
 }
 

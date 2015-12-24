@@ -1,4 +1,4 @@
-package dotadodge.ui.main;
+package dotadodge.ui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

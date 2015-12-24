@@ -1,4 +1,4 @@
-package dotadodge.ui.main;
+package dotadodge.ui.swing;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
