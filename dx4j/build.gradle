@@ -1,0 +1,19 @@
+sourceSets {
+    main {
+	java {
+	    srcDir 'src'
+	}
+    }
+    test {
+	java {
+	    srcDir 'tests'
+	}
+	resources {
+	    srcDir 'resources'
+	}
+    }
+}
+
+dependencies {
+    compile 'com.nativelibs4java:bridj:0.6.1'
+}
