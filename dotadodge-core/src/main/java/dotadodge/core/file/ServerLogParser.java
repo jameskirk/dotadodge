@@ -153,6 +153,9 @@ public class ServerLogParser {
 	    e.printStackTrace();
 	    throw new RuntimeException(e);
 	}
+	if ("test".equals(System.getProperties().getProperty("env"))) {
+		return System.getProperty("user.dir") + "\\server_log.txt";
+	}
 	String pathToServerLog = pathToSteam + "\\" + Configuration.pathFromSteamToDota + "\\" + filenameOfServerLog; // TODO: determine real dota path
 	return pathToServerLog;
     }

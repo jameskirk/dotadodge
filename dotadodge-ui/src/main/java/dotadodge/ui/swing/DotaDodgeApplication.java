@@ -1,7 +1,11 @@
 package dotadodge.ui.swing;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +30,13 @@ public class DotaDodgeApplication extends JFrame {
     }
     
     private void initUI() {
-        matchPanel = new MatchPanel();
-        
+    	setUIFont (new javax.swing.plaf.FontUIResource(new Font("Constantia",Font.BOLD, 18)));
+
+    	matchPanel = new MatchPanel();
         getContentPane().add(matchPanel);
 
         setTitle("Dota Dodge");
-        setSize(650, 400);
+        setSize(450, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -78,6 +83,20 @@ public class DotaDodgeApplication extends JFrame {
         	threadCore.start();
             }
         });
+    }
+    
+    private static void setUIFont(javax.swing.plaf.FontUIResource f)
+    {
+        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements())
+        {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+            {
+                UIManager.put(key, f);
+            }
+        }
     }
 
 }

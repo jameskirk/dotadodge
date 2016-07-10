@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
+
+import dotadodge.core.model.external.PlayerInMatch;
 
 @Entity
 public class Match {
@@ -21,9 +24,14 @@ public class Match {
     private int id;
     
     @ManyToMany
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
+    
+    @Transient 
+    private List<PlayerInMatch> playersInMatch = new ArrayList<>(); 
     
     private Date startDate;
+    
+    private boolean win;
     
     public int getTemporaryId() {
         return temporaryId;
@@ -45,15 +53,31 @@ public class Match {
         this.players = players;
     }
     
-    public Date getStartDate() {
+    public List<PlayerInMatch> getPlayersInMatch() {
+		return playersInMatch;
+	}
+
+	public void setPlayersInMatch(List<PlayerInMatch> playersInMatch) {
+		this.playersInMatch = playersInMatch;
+	}
+
+	public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    
+    public boolean isWin() {
+		return win;
+	}
 
-    @Override
+	public void setWin(boolean win) {
+		this.win = win;
+	}
+
+	@Override
     public String toString() {
 	StringBuilder string = new StringBuilder();
 	string.append("Match temporaryId = " + temporaryId + ", Players = [");

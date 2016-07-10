@@ -3,19 +3,21 @@ package dotadodge.core.db;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import dotadodge.core.file.ServerLogParser;
-import dotadodge.core.misc.Configuration;
-import dotadodge.core.misc.Configuration.ConfigurationKey;
-import dotadodge.core.model.Match;
-import dotadodge.core.model.external.PlayerGlobalDetails;
-import dotadodge.core.model.external.PlayersInPartyInfo;
+import java.util.Vector;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import dotadodge.core.misc.Configuration;
+import dotadodge.core.misc.Configuration.ConfigurationKey;
+import dotadodge.core.model.Match;
+import dotadodge.core.model.external.PlayerGlobalDetails;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
@@ -60,13 +62,41 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
         return winRatePlayers.get(0);
     }
 
-    public String getLastNickName(Integer id) throws IOException {
-        if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
+    @Override
+    public List<PlayerGlobalDetails> getPlayerStats(List<Integer> ids) {
+        List<PlayerGlobalDetails> playerGlobalDetailses = new Vector<>();
+        final CyclicBarrier barrier = new CyclicBarrier(11);
+        for (Integer id : ids) {
+        	Thread threadGetDetails = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+			            playerGlobalDetailses.add(getPlayerDetails(id));
+						barrier.await();
+					} catch (InterruptedException | BrokenBarrierException |IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+        	threadGetDetails.start();
+        }
+        try {
+			barrier.await();
+		} catch (InterruptedException | BrokenBarrierException e) {
+			e.printStackTrace();
+		}
+
+        return playerGlobalDetailses;
+    }
+    
+    private PlayerGlobalDetails getPlayerDetails(Integer id) throws IOException {
+    	PlayerGlobalDetails retVal = new PlayerGlobalDetails();
+    	if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
             System.setProperty("http.proxyHost", Configuration.getInstance().read(ConfigurationKey.PROXY));
             System.setProperty("http.proxyPort", Configuration.getInstance().read(ConfigurationKey.PROXY_PORT));
         }
-        List<String> nickNamePlayers = new ArrayList();
 
+        List<String> winRatePlayers = new ArrayList();
         String url = new String(genReqString("", id));
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
@@ -74,23 +104,18 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
                 .timeout(2000)
                 .followRedirects(true)
                 .get();
-        for (Element e : doc.select("title")) {
-            nickNamePlayers.add(e.text().split(" - ")[0]);
-        }
-        return nickNamePlayers.get(0);
-    }
-
-    @Override
-    public List<PlayerGlobalDetails> getPlayerStats(List<Integer> ids) {
-        List<PlayerGlobalDetails> playerGlobalDetailses = new ArrayList<>();
-        for (Integer id : ids) {
-            try {
-                playerGlobalDetailses.add(new PlayerGlobalDetails(id, getWinRate(id), getLastNickName(id)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return playerGlobalDetailses;
+        String nickName = doc.select("title").get(0).text().split(" - ")[0];
+        try {
+	        Elements rowsMatches = doc.getElementsByAttributeValue("class", "r-table r-only-mobile-5 performances-overview");
+	        for (int i=0; i<10; i++) {
+	        	String hero = rowsMatches.get(0).child(i).child(0).child(1).child(1).text();
+	        	logger.info(id + " " + hero);
+	        }
+        } catch (Exception e) {
+        	e.printStackTrace();
+		}
+        retVal.setNickName(nickName);
+        retVal.setSteamId(id);
+    	return retVal;
     }
 }

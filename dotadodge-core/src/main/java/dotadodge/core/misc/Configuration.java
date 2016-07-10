@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class Configuration {
     
-    public static String pathFromSteamToDota = "SteamApps\\common\\dota 2 beta\\dota";
+    public static String pathFromSteamToDota = "SteamApps\\common\\dota 2 beta\\game\\dota";
     
     public static final String CONFIG_FILE = "dodadodge.properties";
     

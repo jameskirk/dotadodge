@@ -1,10 +1,20 @@
 package dotadodge.core.model.external;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dotadodge.core.model.Match;
+
 public class PlayerGlobalDetails {
     
     private int steamId;
     private String winRate;
     private String nickName;
+    
+    private List<Match> lastMatches = new ArrayList<>();
+    
+    public PlayerGlobalDetails() {
+    }
 
     public PlayerGlobalDetails(int steamId, String winRate, String nickName) {
         this.steamId = steamId;
@@ -35,8 +45,16 @@ public class PlayerGlobalDetails {
     public PlayerGlobalDetails(int steamId) {
 	this.steamId = steamId;
     }
+    
+    public List<Match> getLastMatches() {
+		return lastMatches;
+	}
 
-    public int getSteamId() {
+	public void setLastMatches(List<Match> lastMatches) {
+		this.lastMatches = lastMatches;
+	}
+
+	public int getSteamId() {
         return steamId;
     }
 

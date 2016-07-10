@@ -1,5 +1,6 @@
 package dotadodge.ui.swing;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,8 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.Report;
+import dotadodge.core.service.DotaDodgeService;
 
 public class MatchPanel extends JPanel {
     
@@ -30,55 +33,65 @@ public class MatchPanel extends JPanel {
     
     private List<JLabel> players = new ArrayList<JLabel>();
     
-    private List<JButton> reportButtons= new ArrayList<JButton>();
+    //private List<JButton> reportButtons= new ArrayList<JButton>();
     
-    private List<JLabel> reports = new ArrayList<JLabel>();
+    //private List<JLabel> reports = new ArrayList<JLabel>();
+    
+    private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
     
     public MatchPanel() {
-	setLayout(new GridBagLayout());
-	add(header,  new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 60, 10, 15), 0, 0));
-	add(firstTeamName,  new GridBagConstraints(0, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
-	add(secondTeamName,  new GridBagConstraints(0, 1 + PLAYERS_COUNT/2 + 1, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
-	
-	for (int i=0; i<PLAYERS_COUNT; i++) {
-	    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
-	    // 1. nickname
-	    JLabel playerName = new JLabel();
-	    players.add(playerName);
-	    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-	    
-	    // 2. button
-	    JButton reportButton = new JButton("Report");
-	    reportButton.setSize(4, 4);
-	    add(reportButton,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-	    final int iFinal = i;
-	    MatchPanel thiz = this;
-	    reportButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                ReportDialog dialog = new ReportDialog(thiz);
-	                dialog.setModel(model.getPlayers().get(iFinal));
-	                
-	            }
-	        });
-	    reportButtons.add(reportButton);
-	    
-	    // 3. last reports description
-	    JLabel report = new JLabel();
-	    reports.add(report);
-	    add(report,  new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		setLayout(new GridBagLayout());
+		add(header,  new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 60, 10, 15), 0, 0));
+		add(firstTeamName,  new GridBagConstraints(0, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
+		add(secondTeamName,  new GridBagConstraints(0, 1 + PLAYERS_COUNT/2 + 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
+		
+		for (int i=0; i<PLAYERS_COUNT; i++) {
+		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
+		    // 1. nickname
+		    JLabel playerName = new JLabel();
+		    players.add(playerName);
+		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		    
+		    // 2. button
+//		    JButton reportButton = new JButton("Report");
+//		    reportButton.setSize(4, 4);
+//		    add(reportButton,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+//		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+//		    final int iFinal = i;
+//		    MatchPanel thiz = this;
+//		    reportButton.addActionListener(new ActionListener() {
+//		            @Override
+//		            public void actionPerformed(ActionEvent e) {
+//		                ReportDialog dialog = new ReportDialog(thiz);
+//		                dialog.setModel(model.getPlayers().get(iFinal));
+//		                
+//		            }
+//		        });
+//		    reportButtons.add(reportButton);
+//		    
+//		    // 3. last reports description
+//		    JLabel report = new JLabel();
+//		    reports.add(report);
+//		    add(report,  new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+//		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		}
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		firstTeamName.setVisible(false);
+		secondTeamName.setVisible(false);
+//		reportButtons.forEach(e -> e.setVisible(false));
+		
+		setBackground(new Color(30, 40, 41));
+		Color fontColor = new Color(185, 191, 191);
+		Color fontHeaderColor = new Color(163, 85, 2);
+		header.setForeground(fontColor);
+		firstTeamName.setForeground(fontHeaderColor);
+		secondTeamName.setForeground(fontHeaderColor);
+		players.forEach(e -> e.setForeground(fontColor));
 	}
-	setBorder(new EmptyBorder(10, 10, 10, 10));
-	firstTeamName.setVisible(false);
-	secondTeamName.setVisible(false);
-	reportButtons.forEach(e -> e.setVisible(false));
-    }
     
     public Match getModel() {
         return model;
@@ -88,8 +101,8 @@ public class MatchPanel extends JPanel {
 	if (model == null || model.getPlayers().isEmpty()) {
 	    header.setText("Match not started");
 	    players.forEach(e -> e.setText(""));
-	    reports.forEach(e -> e.setText(""));
-	    reportButtons.forEach(e -> e.setVisible(false));
+//	    reports.forEach(e -> e.setText(""));
+//	    reportButtons.forEach(e -> e.setVisible(false));
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
 	} else {
@@ -103,18 +116,22 @@ public class MatchPanel extends JPanel {
 		    if (name == null || name.isEmpty()) {
 			name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		    }
-		    String winrate = model.getPlayers().get(i).getPlayerDetails().getWinRate();
-		    name += " " + winrate;
+//		    String winrate = model.getPlayers().get(i).getPlayerDetails().getWinRate();
+//		    name += " " + winrate;
+		    if (name.length() > 15) {
+		    	name = name.substring(0, 15);
+		    }
 		}
 
 		players.get(i).setText(name);
-		String reportString = "";
-		for (Report r: model.getPlayers().get(i).getReports()) {
-		    reportString += r.getStars() + ":" + r.getDescription() + "; ";
-		}
-		reports.get(i).setText(reportString);
+//		String reportString = "";
+//		for (Report r: model.getPlayers().get(i).getReports()) {
+//		    reportString += r.getStars() + ":" + r.getDescription() + "; ";
+//		}
+//		reports.get(i).setText(reportString);
 	    }
-	    reportButtons.forEach(e -> e.setVisible(true));
+//	    reportButtons.forEach(e -> e.setVisible(true));
+	    
 	}
         this.model = model;
     }
