@@ -36,7 +36,7 @@ public class DotaDodgeApplication extends JFrame {
         getContentPane().add(matchPanel);
 
         setTitle("Dota Dodge");
-        setSize(450, 600);
+        setSize(750, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

@@ -1,22 +1,28 @@
 package dotadodge.ui.swing;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.javafx.runtime.SystemProperties;
+
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Match;
-import dotadodge.core.model.Report;
 import dotadodge.core.service.DotaDodgeService;
 
 public class MatchPanel extends JPanel {
@@ -39,6 +45,15 @@ public class MatchPanel extends JPanel {
     
     private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
     
+    private BufferedImage getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+        return resizedImg;
+    }
+    
     public MatchPanel() {
 		setLayout(new GridBagLayout());
 		add(header,  new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
@@ -56,6 +71,7 @@ public class MatchPanel extends JPanel {
 		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 		    
+			
 		    // 2. button
 //		    JButton reportButton = new JButton("Report");
 //		    reportButton.setSize(4, 4);
@@ -116,11 +132,31 @@ public class MatchPanel extends JPanel {
 		    if (name == null || name.isEmpty()) {
 			name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		    }
-//		    String winrate = model.getPlayers().get(i).getPlayerDetails().getWinRate();
-//		    name += " " + winrate;
 		    if (name.length() > 15) {
 		    	name = name.substring(0, 15);
 		    }
+		    
+		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
+		    try {
+		    	int iHero = 0;
+		    	for (Match m: model.getPlayers().get(i).getPlayerDetails().getLastMatches()) {
+		    		String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero()
+			    			+ ".jpg";
+		    			BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
+		    					+ "\\src\\main\\resources\\" + fileName));
+						myPicture = getScaledImage(myPicture, 30, 30);
+						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+						
+						add(picLabel,  new GridBagConstraints(1 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+						            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+						iHero++;
+		    	}
+		    	
+		    	
+				
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 		players.get(i).setText(name);

@@ -18,6 +18,7 @@ import dotadodge.core.misc.Configuration;
 import dotadodge.core.misc.Configuration.ConfigurationKey;
 import dotadodge.core.model.Match;
 import dotadodge.core.model.external.PlayerGlobalDetails;
+import dotadodge.core.model.external.PlayerInMatch;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
@@ -109,7 +110,15 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 	        Elements rowsMatches = doc.getElementsByAttributeValue("class", "r-table r-only-mobile-5 performances-overview");
 	        for (int i=0; i<10; i++) {
 	        	String hero = rowsMatches.get(0).child(i).child(0).child(1).child(1).text();
-	        	logger.info(id + " " + hero);
+	        	String win = rowsMatches.get(0).child(i).child(1).child(1).child(0).text();
+	        	logger.info(id + " " + hero + " " + win);
+	        	Match match = new Match();
+	        	PlayerInMatch player = new PlayerInMatch();
+	        	player.setHero(hero);
+	        	boolean isWin = "Won Match".equals(win);
+	        	match.getPlayersInMatch().add(player);
+	        	match.setWin(isWin);
+	        	retVal.getLastMatches().add(match);
 	        }
         } catch (Exception e) {
         	e.printStackTrace();
