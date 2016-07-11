@@ -4,9 +4,9 @@ Programm for dota
 Download https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
 
 <b>How to build:</b>
-A)in console:
- #cd dotadodge-ui
- #gradle.exe createExe
+A)in console:<br>
+ #cd dotadodge-ui<br>
+ #gradle.exe createExe<br>
 you can find binary in dotadodge-ui\build\launch4j\DotaPlus.exe
 
 B)in eclipse:
