@@ -1,7 +1,7 @@
 Programm for dota
 
 <b>How to run</b>
-Download https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
+Download ALL(!) files https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
 
 <b>How to build:</b>
 A)in console:<br>
