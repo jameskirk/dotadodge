@@ -1,10 +1,9 @@
 Programm for dota
 
-
-<h2>How to run
+<b>How to run</b>
 Download https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
 
-<h2>How to build:</h2>
+<b>How to build:</b>
 A)in console:
 #cd dotadodge-ui
 #gradle.exe createExe
