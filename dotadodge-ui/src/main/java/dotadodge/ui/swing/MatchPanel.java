@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
-import com.sun.javafx.runtime.SystemProperties;
 
 import dotadodge.core.misc.GuiceFactory;
 import dotadodge.core.model.Match;
@@ -38,6 +38,8 @@ public class MatchPanel extends JPanel {
     private JLabel secondTeamName = new JLabel("Dire");
     
     private List<JLabel> players = new ArrayList<JLabel>();
+    
+    private List<JLabel> lastHeroes = new ArrayList<JLabel>();
     
     //private List<JButton> reportButtons= new ArrayList<JButton>();
     
@@ -121,10 +123,12 @@ public class MatchPanel extends JPanel {
 //	    reportButtons.forEach(e -> e.setVisible(false));
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
+	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
 	} else {
 	    header.setText("Current match:");
 	    firstTeamName.setVisible(true);
 	    secondTeamName.setVisible(true);
+	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
 		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		if (model.getPlayers().get(i).getPlayerDetails() != null) {
@@ -144,21 +148,27 @@ public class MatchPanel extends JPanel {
 			    			+ ".jpg";
 		    			BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
 		    					+ "\\src\\main\\resources\\" + fileName));
-						myPicture = getScaledImage(myPicture, 30, 30);
+						//myPicture = getScaledImage(myPicture, 128/2, 72/2);
+		    			myPicture = resize(myPicture, 128/3, 72/2);
 						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-						
+						lastHeroes.add(picLabel);
+						Border b;
+						if (m.isWin()) {
+							b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.GREEN);
+						} else {
+							b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
+						}
+					    picLabel.setBorder(b);
 						add(picLabel,  new GridBagConstraints(1 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 						            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 						iHero++;
 		    	}
-		    	
 		    	
 				
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
-
 		players.get(i).setText(name);
 //		String reportString = "";
 //		for (Report r: model.getPlayers().get(i).getReports()) {
@@ -171,6 +181,17 @@ public class MatchPanel extends JPanel {
 	}
         this.model = model;
     }
+    
+    public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
+        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+
+        return dimg;
+    }  
 
     public List<JLabel> getPlayers() {
         return players;

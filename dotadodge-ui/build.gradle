@@ -3,6 +3,10 @@ apply plugin: 'edu.sc.seis.launch4j'
 launch4j {
     mainClassName = "dotadodge.ui.swing.DotaDodgeApplication"
     //icon = 'icons/myApp.ico'
+    copy {
+    	from 'src/main/resources/heroes'
+    	into 'build/launch4j/src/main/resources/heroes'
+	}
 }
 
 buildscript {
@@ -15,6 +19,8 @@ buildscript {
       classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.1'
     }
   }
+
+
 
 dependencies {
     compile project(':dotadodge-core'), project(':dx4j'), 'net.java.dev.jna:jna:4.2.1'
