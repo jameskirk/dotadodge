@@ -5,8 +5,8 @@ Download https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl
 
 <b>How to build:</b>
 A)in console:
-#cd dotadodge-ui
-#gradle.exe createExe
+ #cd dotadodge-ui
+ #gradle.exe createExe
 you can find binary in dotadodge-ui\build\launch4j\DotaPlus.exe
 
 B)in eclipse:
