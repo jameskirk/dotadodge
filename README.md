@@ -1,5 +1,6 @@
-Programm for dota
-![alt tag](https://i.gyazo.com/830f8c7ad9f7dd22b8ff030062cfe8ce.png)
+Programm for dota<br>
+<img src="https://i.gyazo.com/830f8c7ad9f7dd22b8ff030062cfe8ce.png" height="50%" width="50%"/>
+
 
 <b>How to run</b>
 Download ALL(!) files https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
