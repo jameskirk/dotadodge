@@ -3,10 +3,12 @@ apply plugin: 'edu.sc.seis.launch4j'
 launch4j {
     mainClassName = "dotadodge.ui.swing.DotaDodgeApplication"
     //icon = 'icons/myApp.ico'
+    outfile = 'DotaPlus.exe'
     copy {
     	from 'src/main/resources/heroes'
     	into 'build/launch4j/src/main/resources/heroes'
 	}
+	
 }
 
 buildscript {
