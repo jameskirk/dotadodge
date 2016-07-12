@@ -41,6 +41,8 @@ public class MatchPanel extends JPanel {
     
     private List<JLabel> lastHeroes = new ArrayList<JLabel>();
     
+    private List<LikeComponent> likeComponents = new ArrayList<>();
+    
     //private List<JButton> reportButtons= new ArrayList<JButton>();
     
     //private List<JLabel> reports = new ArrayList<JLabel>();
@@ -124,11 +126,16 @@ public class MatchPanel extends JPanel {
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
+	    likeComponents.forEach( e -> remove(e));
+	    likeComponents.clear();
 	} else {
 	    header.setText("Current match:");
 	    firstTeamName.setVisible(true);
 	    secondTeamName.setVisible(true);
-	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
+	    lastHeroes.forEach(e -> { e.setIcon(null); e.setVisible(false); e.repaint(); remove(e);} );
+	    lastHeroes.clear();
+	    likeComponents.forEach( e -> remove(e));
+	    likeComponents.clear();
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
 		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		if (model.getPlayers().get(i).getPlayerDetails() != null) {
@@ -140,7 +147,13 @@ public class MatchPanel extends JPanel {
 		    	name = name.substring(0, 15);
 		    }
 		    
+		    LikeComponent likeComponent = new LikeComponent();
+		    likeComponents.add(likeComponent);
 		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
+		    add(likeComponent,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+		    
+		    
 		    try {
 		    	int iHero = 0;
 		    	for (Match m: model.getPlayers().get(i).getPlayerDetails().getLastMatches()) {
@@ -159,7 +172,7 @@ public class MatchPanel extends JPanel {
 							b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
 						}
 					    picLabel.setBorder(b);
-						add(picLabel,  new GridBagConstraints(1 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+						add(picLabel,  new GridBagConstraints(2 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 						            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 						iHero++;
 		    	}

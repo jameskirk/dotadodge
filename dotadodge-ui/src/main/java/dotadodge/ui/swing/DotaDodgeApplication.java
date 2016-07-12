@@ -39,6 +39,7 @@ public class DotaDodgeApplication extends JFrame {
         setSize(950, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setVisible(true);
     }
     
