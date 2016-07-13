@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class SteamGlobalStatisticDaoImpl implements GlobalStatisticDao {
     @Override
-    public List<PlayerGlobalDetails> getPlayerStats(List<Integer> id) {
+    public List<PlayerGlobalDetails> getPlayersDetails(List<Integer> id) {
         return null;
     }
 

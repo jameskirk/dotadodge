@@ -42,7 +42,7 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 		List<Player> retVal = new ArrayList<>();// customStatisticDao.getPlayers(playersId);
 		playersId.forEach(e -> retVal.add(new Player(e)));
 		// TODO: uncomment, when performance of Dao will be improved
-		List<PlayerGlobalDetails> playersDetails = globalStatisticDao.getPlayerStats(playersId);
+		List<PlayerGlobalDetails> playersDetails = globalStatisticDao.getPlayersDetails(playersId);
 		for (Player player : retVal) {
 			for (PlayerGlobalDetails playerDetails : playersDetails) {
 				if (player.getSteamId() == playerDetails.getSteamId()) {

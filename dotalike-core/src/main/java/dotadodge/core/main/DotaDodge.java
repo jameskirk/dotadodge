@@ -10,6 +10,8 @@ import com.google.inject.Inject;
 
 import dotadodge.core.file.MatchNotStartedException;
 import dotadodge.core.file.ServerLogParser;
+import dotadodge.core.misc.Configuration;
+import dotadodge.core.misc.Configuration.ConfigurationKey;
 import dotadodge.core.service.DotaDodgeService;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
@@ -18,7 +20,6 @@ public class DotaDodge {
     
     private static final Logger logger = LoggerFactory.getLogger(DotaDodge.class);
     
-    
     @Inject
     private ServerLogParser serverLogParser;
     
@@ -26,6 +27,10 @@ public class DotaDodge {
     private DotaDodgeService dotaDodgeService;
     
     public DotaDodge() {
+    	if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
+            System.setProperty("http.proxyHost", Configuration.getInstance().read(ConfigurationKey.PROXY));
+            System.setProperty("http.proxyPort", Configuration.getInstance().read(ConfigurationKey.PROXY_PORT));
+        }
     }
     
     public void run() {
