@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import dotadodge.core.misc.GuiceFactory;
-import dotadodge.core.service.DotaDodgeService;
 import dotalike.common.model.Player;
 import dotalike.common.model.Report;
+import dotalike.core.misc.GuiceFactory;
+import dotalike.core.service.DotaDodgeService;
 
 public class ReportDialog extends JDialog {
     

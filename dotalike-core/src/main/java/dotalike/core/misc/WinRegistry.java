@@ -1,4 +1,4 @@
-package dotadodge.core.misc;
+package dotalike.core.misc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

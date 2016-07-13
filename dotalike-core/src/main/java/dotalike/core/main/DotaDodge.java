@@ -1,4 +1,4 @@
-package dotadodge.core.main;
+package dotalike.core.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import dotadodge.core.file.MatchNotStartedException;
-import dotadodge.core.file.ServerLogParser;
-import dotadodge.core.misc.Configuration;
-import dotadodge.core.misc.Configuration.ConfigurationKey;
-import dotadodge.core.service.DotaDodgeService;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
+import dotalike.core.file.ServerLogParser;
+import dotalike.core.misc.Configuration;
+import dotalike.core.misc.MatchNotStartedException;
+import dotalike.core.misc.Configuration.ConfigurationKey;
+import dotalike.core.service.DotaDodgeService;
 
 public class DotaDodge {
     
@@ -38,23 +38,23 @@ public class DotaDodge {
     
     public void dodge() {
 	//TODO
-    }
-    
-    public Match getCurrentMatch() throws MatchNotStartedException {
-	Match match = serverLogParser.parse();
-	
-	if (serverLogParser.isNewMatch()) {
-	    logger.debug("loading players from service");
-	    List<Integer> playersIds = new ArrayList<Integer>();
-	    match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
-	    List<Player> players = dotaDodgeService.getPlayers(playersIds);
-	    match.setPlayers(players);
 	}
-	return match;
-    }
-    
-    public DotaDodgeService getDotaDodgeService() {
-        return dotaDodgeService;
-    }
-    
+
+	public Match getCurrentMatch() throws MatchNotStartedException {
+		Match match = serverLogParser.parse();
+
+		if (serverLogParser.isNewMatch()) {
+			logger.debug("loading players from service");
+			List<Integer> playersIds = new ArrayList<Integer>();
+			match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
+			List<Player> players = dotaDodgeService.getPlayers(playersIds);
+			match.setPlayers(players);
+		}
+		return match;
+	}
+
+	public DotaDodgeService getDotaDodgeService() {
+		return dotaDodgeService;
+	}
+
 }

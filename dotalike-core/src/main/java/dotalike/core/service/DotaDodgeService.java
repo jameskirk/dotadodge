@@ -1,4 +1,4 @@
-package dotadodge.core.service;
+package dotalike.core.service;
 
 import java.util.Date;
 import java.util.List;

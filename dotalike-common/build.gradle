@@ -2,10 +2,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4',
             'org.slf4j:slf4j-api:1.7.13',
 	    	'org.slf4j:slf4j-log4j12:1.7.13',
-            'org.jsoup:jsoup:1.7.1',
-            'us.codecraft:xsoup:0.3.1',
     
-    		'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final',
-            'com.google.inject.extensions:guice-persist:4.0'
+    		'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
     
 }

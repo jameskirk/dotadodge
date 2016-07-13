@@ -10,11 +10,11 @@ import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dotadodge.core.file.MatchNotStartedException;
-import dotadodge.core.main.DotaDodge;
-import dotadodge.core.misc.GuiceFactory;
-import dotadodge.core.misc.StdOutErrLog;
 import dotalike.common.model.Match;
+import dotalike.core.main.DotaDodge;
+import dotalike.core.misc.GuiceFactory;
+import dotalike.core.misc.MatchNotStartedException;
+import dotalike.core.misc.StdOutErrLog;
 
 public class DotaDodgeApplication extends JFrame {
     

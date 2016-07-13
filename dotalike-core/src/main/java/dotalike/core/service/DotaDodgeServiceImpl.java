@@ -1,4 +1,4 @@
-package dotadodge.core.service;
+package dotalike.core.service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,12 +11,12 @@ import javax.xml.ws.Service;
 
 import com.google.inject.Inject;
 
-import dotadodge.core.dao.GlobalStatisticDao;
 import dotalike.common.dao.CustomStatisticDao;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.Report;
 import dotalike.common.model.external.PlayerGlobalDetails;
+import dotalike.core.dao.GlobalStatisticDao;
 
 public class DotaDodgeServiceImpl implements DotaDodgeService {
     

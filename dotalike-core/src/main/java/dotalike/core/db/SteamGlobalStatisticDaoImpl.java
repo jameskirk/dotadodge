@@ -1,8 +1,8 @@
-package dotadodge.core.db;
+package dotalike.core.db;
 
-import dotadodge.core.dao.GlobalStatisticDao;
 import dotalike.common.model.external.PlayerGlobalDetails;
-import dotalike.common.model.external.PlayersInPartyInfo;
+import dotalike.core.dao.GlobalStatisticDao;
+import dotalike.common.model.external.Party;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,8 +18,8 @@ public class SteamGlobalStatisticDaoImpl implements GlobalStatisticDao {
         return null;
     }
 
-    public List<PlayersInPartyInfo> getPlayersInPartyInfo(List<Integer> ids) {
-        Set<PlayersInPartyInfo> playersInPartyInfo = new HashSet<>();
+    public List<Party> getPlayersInPartyInfo(List<Integer> ids) {
+        Set<Party> playersInPartyInfo = new HashSet<>();
         for (Integer id : ids){
 
             List<Integer> friendsIdList = new ArrayList<>(findFriendsList(id));
@@ -27,7 +27,7 @@ public class SteamGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
 
         }
-        List<PlayersInPartyInfo> res = new ArrayList<>();
+        List<Party> res = new ArrayList<>();
         res.addAll(playersInPartyInfo);
             return res;
     }

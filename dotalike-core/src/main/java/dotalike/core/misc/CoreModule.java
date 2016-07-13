@@ -1,11 +1,11 @@
-package dotadodge.core.misc;
+package dotalike.core.misc;
 
 import com.google.inject.AbstractModule;
 
-import dotadodge.core.dao.GlobalStatisticDao;
-import dotadodge.core.db.DotabuffGlobalStatisticDaoImpl;
-import dotadodge.core.service.DotaDodgeService;
-import dotadodge.core.service.DotaDodgeServiceImpl;
+import dotalike.core.dao.GlobalStatisticDao;
+import dotalike.core.db.DotabuffGlobalStatisticDaoImpl;
+import dotalike.core.service.DotaDodgeService;
+import dotalike.core.service.DotaDodgeServiceImpl;
 
 public class CoreModule extends AbstractModule{
 

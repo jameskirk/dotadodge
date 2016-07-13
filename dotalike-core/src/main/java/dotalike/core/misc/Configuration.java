@@ -1,4 +1,4 @@
-package dotadodge.core.misc;
+package dotalike.core.misc;
 
 import java.io.File;
 import java.io.FileInputStream;

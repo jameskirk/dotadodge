@@ -21,9 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import dotadodge.core.misc.GuiceFactory;
-import dotadodge.core.service.DotaDodgeService;
 import dotalike.common.model.Match;
+import dotalike.core.misc.GuiceFactory;
+import dotalike.core.service.DotaDodgeService;
 
 public class MatchPanel extends JPanel {
     

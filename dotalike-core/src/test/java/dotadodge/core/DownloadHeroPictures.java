@@ -10,12 +10,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
-import dotadodge.core.misc.Configuration;
-import dotadodge.core.misc.Configuration.ConfigurationKey;
 import dotalike.common.model.external.PlayerGlobalDetails;
+import dotalike.core.misc.Configuration;
+import dotalike.core.misc.Configuration.ConfigurationKey;
 import us.codecraft.xsoup.Xsoup;
 
-public class DownloadPictures {
+public class DownloadHeroPictures {
 	
 	//@Test
 	public void download() throws IOException {

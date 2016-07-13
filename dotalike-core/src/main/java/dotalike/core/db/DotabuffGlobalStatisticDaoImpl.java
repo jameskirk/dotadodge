@@ -1,4 +1,4 @@
-package dotadodge.core.db;
+package dotalike.core.db;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,10 +12,10 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dotadodge.core.dao.GlobalStatisticDao;
 import dotalike.common.model.Match;
 import dotalike.common.model.external.PlayerGlobalDetails;
 import dotalike.common.model.external.PlayerInMatch;
+import dotalike.core.dao.GlobalStatisticDao;
 import us.codecraft.xsoup.Xsoup;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {

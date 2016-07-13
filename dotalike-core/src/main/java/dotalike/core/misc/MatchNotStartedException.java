@@ -1,4 +1,4 @@
-package dotadodge.core.file;
+package dotalike.core.misc;
 
 public class MatchNotStartedException extends Exception {
 

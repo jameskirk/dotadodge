@@ -1,9 +1,10 @@
 package dotadodge.core;
 
 import com.google.inject.Injector;
-import dotadodge.core.db.DotabuffGlobalStatisticDaoImpl;
-import dotadodge.core.misc.GuiceFactory;
+
 import dotalike.common.model.external.PlayerGlobalDetails;
+import dotalike.core.db.DotabuffGlobalStatisticDaoImpl;
+import dotalike.core.misc.GuiceFactory;
 
 import org.junit.Test;
 
