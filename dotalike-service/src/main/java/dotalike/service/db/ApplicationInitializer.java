@@ -14,19 +14,19 @@ public class ApplicationInitializer {
     
     private static boolean initialized = false;
 
-    @Inject
-    public ApplicationInitializer(PersistService persistenceService) {
-	// start JPA
-	this.persistenceService = persistenceService;;
-    }
-    
-    public void start() {
-	if (initialized) {
-	    logger.warn("application is already initialized");
-	    return;
+	@Inject
+	public ApplicationInitializer(PersistService persistenceService) {
+		// start JPA
+		this.persistenceService = persistenceService;
+		;
 	}
-	persistenceService.start();
-	initialized = true;
-    }
-    
+
+	public void start() {
+		if (initialized) {
+			logger.warn("application is already initialized");
+			return;
+		}
+		persistenceService.start();
+		initialized = true;
+	}
 }

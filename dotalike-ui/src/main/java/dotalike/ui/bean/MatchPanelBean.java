@@ -1,4 +1,4 @@
-package dotadodge.ui.bean;
+package dotalike.ui.bean;
 
 import java.util.ArrayList;
 import java.util.List;

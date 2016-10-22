@@ -1,4 +1,4 @@
-package dotadodge.ui.cms;
+package dotalike.ui.cms;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

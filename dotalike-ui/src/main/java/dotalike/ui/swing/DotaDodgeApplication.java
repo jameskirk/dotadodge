@@ -1,4 +1,4 @@
-package dotadodge.ui.swing;
+package dotalike.ui.swing;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -35,8 +35,8 @@ public class DotaDodgeApplication extends JFrame {
     	matchPanel = new MatchPanel();
         getContentPane().add(matchPanel);
 
-        setTitle("Dota Dodge");
-        setSize(950, 550);
+        setTitle("Dota Dodge v0.01");
+        setSize(1100, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);

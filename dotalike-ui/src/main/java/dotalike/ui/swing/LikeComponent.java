@@ -1,4 +1,4 @@
-package dotadodge.ui.swing;
+package dotalike.ui.swing;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

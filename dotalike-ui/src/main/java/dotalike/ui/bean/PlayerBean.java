@@ -1,4 +1,4 @@
-package dotadodge.ui.bean;
+package dotalike.ui.bean;
 
 public class PlayerBean {
     

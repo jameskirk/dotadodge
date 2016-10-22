@@ -6,7 +6,7 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 
 public class GuiceFactory {
     
-    public static final String PU_NAME_TEST = "testPU";
+    //public static final String PU_NAME_TEST = "testPU";
     
     public static final String PU_NAME_PROD = "prodPU";
     

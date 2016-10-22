@@ -10,6 +10,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import dotalike.common.model.Player;
 import dotalike.common.model.Report;
+import dotalike.common.model.dto.PlayersList;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
@@ -18,8 +19,8 @@ public interface CustomStatisticDao {
 	@WebMethod
 	public String getTime(String str);
     
-	
-    //public List<Player> getPlayers(List<Integer> ids);
+	@WebMethod
+    public PlayersList getPlayers(List<Integer> ids);
     
     //public void reportPlayer(Report report, int toSteamId, Date toMatchDate);
 

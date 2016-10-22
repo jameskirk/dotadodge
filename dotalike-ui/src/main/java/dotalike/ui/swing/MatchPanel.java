@@ -1,4 +1,4 @@
-package dotadodge.ui.swing;
+package dotalike.ui.swing;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -37,15 +37,15 @@ public class MatchPanel extends JPanel {
     
     private JLabel secondTeamName = new JLabel("Dire");
     
+    private JLabel soloMMRHeader = new JLabel("Solo MMR");
+    
     private List<JLabel> players = new ArrayList<JLabel>();
     
     private List<JLabel> lastHeroes = new ArrayList<JLabel>();
     
     private List<LikeComponent> likeComponents = new ArrayList<>();
     
-    //private List<JButton> reportButtons= new ArrayList<JButton>();
-    
-    //private List<JLabel> reports = new ArrayList<JLabel>();
+    private List<JLabel> soloMMRs = new ArrayList<JLabel>();
     
     private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
     
@@ -66,6 +66,8 @@ public class MatchPanel extends JPanel {
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
 		add(secondTeamName,  new GridBagConstraints(0, 1 + PLAYERS_COUNT/2 + 1, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
+		add(soloMMRHeader,  new GridBagConstraints(12, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 		
 		for (int i=0; i<PLAYERS_COUNT; i++) {
 		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
@@ -74,34 +76,16 @@ public class MatchPanel extends JPanel {
 		    players.add(playerName);
 		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-		    
+		    JLabel soloMMR = new JLabel("");
+		    soloMMRs.add(soloMMR);
+		    add(soloMMR,  new GridBagConstraints(12, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 			
-		    // 2. button
-//		    JButton reportButton = new JButton("Report");
-//		    reportButton.setSize(4, 4);
-//		    add(reportButton,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-//		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-//		    final int iFinal = i;
-//		    MatchPanel thiz = this;
-//		    reportButton.addActionListener(new ActionListener() {
-//		            @Override
-//		            public void actionPerformed(ActionEvent e) {
-//		                ReportDialog dialog = new ReportDialog(thiz);
-//		                dialog.setModel(model.getPlayers().get(iFinal));
-//		                
-//		            }
-//		        });
-//		    reportButtons.add(reportButton);
-//		    
-//		    // 3. last reports description
-//		    JLabel report = new JLabel();
-//		    reports.add(report);
-//		    add(report,  new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-//		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 		}
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		firstTeamName.setVisible(false);
 		secondTeamName.setVisible(false);
+		soloMMRHeader.setVisible(false);
 //		reportButtons.forEach(e -> e.setVisible(false));
 		
 		setBackground(new Color(30, 40, 41));
@@ -110,6 +94,8 @@ public class MatchPanel extends JPanel {
 		header.setForeground(fontColor);
 		firstTeamName.setForeground(fontHeaderColor);
 		secondTeamName.setForeground(fontHeaderColor);
+		soloMMRHeader.setForeground(fontHeaderColor);
+		soloMMRs.forEach(e -> e.setForeground(fontColor));
 		players.forEach(e -> e.setForeground(fontColor));
 	}
     
@@ -125,6 +111,7 @@ public class MatchPanel extends JPanel {
 //	    reportButtons.forEach(e -> e.setVisible(false));
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
+	    soloMMRHeader.setVisible(false);
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
 	    likeComponents.forEach( e -> remove(e));
 	    likeComponents.clear();
@@ -132,6 +119,7 @@ public class MatchPanel extends JPanel {
 	    header.setText("Current match:");
 	    firstTeamName.setVisible(true);
 	    secondTeamName.setVisible(true);
+	    soloMMRHeader.setVisible(true);
 	    lastHeroes.forEach(e -> { e.setIcon(null); e.setVisible(false); e.repaint(); remove(e);} );
 	    lastHeroes.clear();
 	    likeComponents.forEach( e -> remove(e));
@@ -152,7 +140,11 @@ public class MatchPanel extends JPanel {
 		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
 		    add(likeComponent,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-		    
+		    String soloMMRText = "";
+		    if (model.getPlayers().get(i).getPlayerDetails().getSoloMmr() != null) {
+		    	soloMMRText = model.getPlayers().get(i).getPlayerDetails().getSoloMmr().toString();
+		    }
+		    soloMMRs.get(i).setText(soloMMRText);
 		    
 		    try {
 		    	int iHero = 0;
@@ -183,13 +175,7 @@ public class MatchPanel extends JPanel {
 			}
 		}
 		players.get(i).setText(name);
-//		String reportString = "";
-//		for (Report r: model.getPlayers().get(i).getReports()) {
-//		    reportString += r.getStars() + ":" + r.getDescription() + "; ";
-//		}
-//		reports.get(i).setText(reportString);
 	    }
-//	    reportButtons.forEach(e -> e.setVisible(true));
 	    
 	}
         this.model = model;

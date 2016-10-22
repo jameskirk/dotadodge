@@ -5,10 +5,10 @@
   version="2.0">
   <persistence-unit name="testPU">
   
-    <class>dotadodge.core.model.Match</class>
-    <class>dotadodge.core.model.Player</class>
-    <class>dotadodge.core.model.Report</class>
-    <class>dotadodge.core.model.Rating</class>
+    <class>dotalike.common.model.Match</class>
+    <class>dotalike.common.model.Player</class>
+    <class>dotalike.common.model.Report</class>
+    <class>dotalike.common.model.Rating</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     
     <properties>
@@ -36,10 +36,11 @@
   
   <persistence-unit name="prodPU">
   
-    <class>dotadodge.core.model.Match</class>
-    <class>dotadodge.core.model.Player</class>
-    <class>dotadodge.core.model.Report</class>
-    <class>dotadodge.core.model.Rating</class>
+    <class>dotalike.common.model.Match</class>
+    <class>dotalike.common.model.Player</class>
+    <class>dotalike.common.model.Report</class>
+    <class>dotalike.common.model.Rating</class>
+    <class>dotalike.common.model.Like</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     
     <properties>

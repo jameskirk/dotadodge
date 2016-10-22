@@ -87,10 +87,20 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 							.compile("//*[@class='r-table r-only-mobile-5 performances-overview']/div["
 									+ new Integer(i + 1).toString() + "]/div[2]//a")
 							.evaluate(doc).getElements().get(0).text();
-					logger.info(id + " " + hero + " " + win);
+					boolean soloMmrIsPresent =  Xsoup
+							.compile("//*[@class='header-content-secondary']/dl[2]/dt[1]")
+							.evaluate(doc).getElements().get(0).text().equalsIgnoreCase("Solo MMR");
+					Integer soloMmr = null;
+					if (soloMmrIsPresent) {
+						soloMmr = Integer.valueOf(Xsoup
+								.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
+								.evaluate(doc).getElements().get(0).text());
+					}
+					logger.info(id + " " + hero + " " + win + " " + soloMmr);
 					Match match = new Match();
 					PlayerInMatch player = new PlayerInMatch();
 					player.setHero(hero);
+					retVal.setSoloMmr(soloMmr);
 					boolean isWin = "Won Match".equals(win);
 					match.getPlayersInMatch().add(player);
 					match.setWin(isWin);

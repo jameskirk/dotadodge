@@ -1,17 +1,19 @@
 package dotalike.common.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 import dotalike.common.model.external.PlayerGlobalDetails;
 
 @Entity
+@XmlType
 public class Player {
     
     @Id
@@ -19,11 +21,12 @@ public class Player {
     
     private String name;
     
-    @OneToOne
-    private Rating rating;
-    
     @OneToMany
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Like> likes;
+    
+    private int likeCount;
+    
+    private int dislikeCount;
     
     @Transient
     private PlayerGlobalDetails playerDetails;
@@ -47,22 +50,6 @@ public class Player {
         this.name = name;
     }
     
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-    
     public PlayerGlobalDetails getPlayerDetails() {
         return playerDetails;
     }
@@ -70,8 +57,36 @@ public class Player {
     public void setPlayerDetails(PlayerGlobalDetails playerDetails) {
         this.playerDetails = playerDetails;
     }
+    
+    public List<Like> getLikes() {
+		return likes;
+	}
 
-    @Override
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public int getDislikeCount() {
+		return dislikeCount;
+	}
+
+	public void setDislikeCount(int dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
+
+	public void setSteamId(int steamId) {
+		this.steamId = steamId;
+	}
+
+	@Override
     public String toString() {
         return steamId + "";
     }

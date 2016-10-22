@@ -35,6 +35,7 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 			Service service = Service.create(url, qname);
 			CustomStatisticDao customStatisticDao = service.getPort(CustomStatisticDao.class);
 			System.out.println(customStatisticDao.getTime("mkyong"));
+			System.out.println(customStatisticDao.getPlayers(playersId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

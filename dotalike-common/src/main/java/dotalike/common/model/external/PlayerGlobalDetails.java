@@ -10,6 +10,7 @@ public class PlayerGlobalDetails {
     private int steamId;
     private String winRate;
     private String nickName;
+    private Integer soloMmr;
     
     private List<Match> lastMatches = new ArrayList<>();
     
@@ -58,6 +59,13 @@ public class PlayerGlobalDetails {
         return steamId;
     }
 
+	public Integer getSoloMmr() {
+		return soloMmr;
+	}
 
+	public void setSoloMmr(Integer soloMmr) {
+		this.soloMmr = soloMmr;
+	}
+	
 
 }

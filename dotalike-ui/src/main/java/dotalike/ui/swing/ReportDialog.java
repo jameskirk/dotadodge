@@ -1,4 +1,4 @@
-package dotadodge.ui.swing;
+package dotalike.ui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +57,7 @@ public class ReportDialog extends JDialog {
         	report.setDescription(reportDescription.getText());
         	report.setStars(Integer.parseInt((String) stars.getSelectedItem()));
         	dotaDodgeService.report(report, model.getSteamId(), null);
-        	model.getReports().add(report);
+        	//model.getReports().add(report);
         	parentComponent.setModel(parentComponent.getModel());
         	dispose();
             }

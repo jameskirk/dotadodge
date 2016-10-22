@@ -31,14 +31,6 @@ public class DaoTest {
 	m.getPlayers().add(new Player(123));
 	m.getPlayers().add(new Player(124));
 	m.getPlayers().add(new Player(125));
-	m.getPlayers().get(1).getReports().add(r);
-	m.getPlayers().get(1).getReports().add(new Report());
-	for (Player p : m.getPlayers()) {
-	    for (Report r1 : p.getReports()) {
-		JPA.em().persist(r1);
-	    }
-	    JPA.em().persist(p);
-	}
 	JPA.em().persist(m);
 	tx.commit();
 	
