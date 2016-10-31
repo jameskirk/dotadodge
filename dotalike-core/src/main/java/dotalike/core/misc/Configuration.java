@@ -21,6 +21,11 @@ public class Configuration {
     }
     
     public String read(ConfigurationKey key) {
+    	String systemProperty = System.getProperties().getProperty(key.getKey());
+    	if (systemProperty != null) {
+    		return systemProperty;
+    	}
+    	
 	Properties properties = new Properties();
 	File file = new File(CONFIG_FILE);
 	if (!file.exists()) {
