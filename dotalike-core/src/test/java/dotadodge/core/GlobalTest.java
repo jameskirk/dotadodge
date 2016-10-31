@@ -1,16 +1,16 @@
 package dotadodge.core;
 
-import com.google.inject.Injector;
-
-import dotalike.common.model.external.PlayerGlobalDetails;
-import dotalike.core.db.DotabuffGlobalStatisticDaoImpl;
-import dotalike.core.misc.GuiceFactory;
-
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
+
+import com.google.inject.Injector;
+
+import dotalike.common.model.Player;
+import dotalike.core.db.DotabuffGlobalStatisticDaoImpl;
+import dotalike.core.misc.GuiceFactory;
 
 /**
  * Created by Andrew on 18.12.2015.
@@ -27,8 +27,8 @@ public class GlobalTest {
         ids.add(71146225);
         ids.add(110645196);
         ids.add(26559018);
-        List<PlayerGlobalDetails> blabla = new ArrayList<>(globalStatisticDao.getPlayersDetails(ids));
-        for (PlayerGlobalDetails bla : blabla){
+        List<Player> blabla = new ArrayList<>(globalStatisticDao.getPlayersDetails(ids));
+        for (Player bla : blabla){
             System.out.println(bla.getNickName());
             System.out.println(bla.getSteamId());
             System.out.println(bla.getWinRate());

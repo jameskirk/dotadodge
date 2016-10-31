@@ -12,11 +12,11 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import us.codecraft.xsoup.Xsoup;
 import dotalike.common.model.Match;
-import dotalike.common.model.external.PlayerGlobalDetails;
+import dotalike.common.model.Player;
 import dotalike.common.model.external.PlayerInMatch;
 import dotalike.core.dao.GlobalStatisticDao;
-import us.codecraft.xsoup.Xsoup;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
@@ -30,8 +30,8 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
     }
 
     @Override
-    public List<PlayerGlobalDetails> getPlayersDetails(List<Integer> ids) {
-        List<PlayerGlobalDetails> retVal = new Vector<>();
+    public List<Player> getPlayersDetails(List<Integer> ids) {
+        List<Player> retVal = new Vector<>();
         final CyclicBarrier barrier = new CyclicBarrier(11);
         for (Integer id : ids) {
         	
@@ -58,8 +58,8 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
         return retVal;
     }
     
-    private PlayerGlobalDetails getPlayerDetails(Integer id) throws IOException {
-    	PlayerGlobalDetails retVal = new PlayerGlobalDetails();
+    private Player getPlayerDetails(Integer id) throws IOException {
+    	Player retVal = new Player();
     	
         String url = new String(DOTABUFF_PLAYERS + id);
         Document doc = Jsoup.connect(url)

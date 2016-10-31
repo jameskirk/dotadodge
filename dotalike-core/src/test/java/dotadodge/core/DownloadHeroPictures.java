@@ -8,18 +8,17 @@ import java.util.List;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
 
-import dotalike.common.model.external.PlayerGlobalDetails;
+import us.codecraft.xsoup.Xsoup;
+import dotalike.common.model.Player;
 import dotalike.core.misc.Configuration;
 import dotalike.core.misc.Configuration.ConfigurationKey;
-import us.codecraft.xsoup.Xsoup;
 
 public class DownloadHeroPictures {
 	
 	//@Test
 	public void download() throws IOException {
-		PlayerGlobalDetails retVal = new PlayerGlobalDetails();
+		Player retVal = new Player();
     	if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
             System.setProperty("http.proxyHost", Configuration.getInstance().read(ConfigurationKey.PROXY));
             System.setProperty("http.proxyPort", Configuration.getInstance().read(ConfigurationKey.PROXY_PORT));

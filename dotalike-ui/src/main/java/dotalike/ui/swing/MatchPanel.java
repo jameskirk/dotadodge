@@ -126,8 +126,8 @@ public class MatchPanel extends JPanel {
 	    likeComponents.clear();
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
 		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
-		if (model.getPlayers().get(i).getPlayerDetails() != null) {
-		    name = model.getPlayers().get(i).getPlayerDetails().getNickName();
+		if (model.getPlayers().get(i) != null) {
+		    name = model.getPlayers().get(i).getNickName();
 		    if (name == null || name.isEmpty()) {
 			name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		    }
@@ -141,14 +141,14 @@ public class MatchPanel extends JPanel {
 		    add(likeComponent,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 		    String soloMMRText = "";
-		    if (model.getPlayers().get(i).getPlayerDetails().getSoloMmr() != null) {
-		    	soloMMRText = model.getPlayers().get(i).getPlayerDetails().getSoloMmr().toString();
+		    if (model.getPlayers().get(i).getSoloMmr() != null) {
+		    	soloMMRText = model.getPlayers().get(i).getSoloMmr().toString();
 		    }
 		    soloMMRs.get(i).setText(soloMMRText);
 		    
 		    try {
 		    	int iHero = 0;
-		    	for (Match m: model.getPlayers().get(i).getPlayerDetails().getLastMatches()) {
+		    	for (Match m: model.getPlayers().get(i).getLastMatches()) {
 		    		String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero()
 			    			+ ".jpg";
 		    			BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 

@@ -1,20 +1,20 @@
 package dotalike.core.db;
 
-import dotalike.common.model.external.PlayerGlobalDetails;
-import dotalike.core.dao.GlobalStatisticDao;
-import dotalike.common.model.external.Party;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import dotalike.common.model.Player;
+import dotalike.common.model.external.Party;
+import dotalike.core.dao.GlobalStatisticDao;
 
 /**
  * Created by anstepan on 18.12.2015.
  */
 public class SteamGlobalStatisticDaoImpl implements GlobalStatisticDao {
     @Override
-    public List<PlayerGlobalDetails> getPlayersDetails(List<Integer> id) {
+    public List<Player> getPlayersDetails(List<Integer> id) {
         return null;
     }
 

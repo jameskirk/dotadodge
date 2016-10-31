@@ -1,16 +1,13 @@
 package dotalike.common.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
-import dotalike.common.model.external.PlayerGlobalDetails;
 
 @Entity
 @XmlType
@@ -29,7 +26,16 @@ public class Player {
     private int dislikeCount;
     
     @Transient
-    private PlayerGlobalDetails playerDetails;
+    private String winRate;
+    
+    @Transient
+    private String nickName;
+    
+    @Transient
+    private Integer soloMmr;
+    
+    @Transient
+    private List<Match> lastMatches = new ArrayList<>();
     
     public Player() {
     }
@@ -48,14 +54,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-    
-    public PlayerGlobalDetails getPlayerDetails() {
-        return playerDetails;
-    }
-
-    public void setPlayerDetails(PlayerGlobalDetails playerDetails) {
-        this.playerDetails = playerDetails;
     }
     
     public List<Like> getLikes() {
@@ -84,6 +82,38 @@ public class Player {
 
 	public void setSteamId(int steamId) {
 		this.steamId = steamId;
+	}
+	
+	public String getWinRate() {
+		return winRate;
+	}
+
+	public void setWinRate(String winRate) {
+		this.winRate = winRate;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public Integer getSoloMmr() {
+		return soloMmr;
+	}
+
+	public void setSoloMmr(Integer soloMmr) {
+		this.soloMmr = soloMmr;
+	}
+	
+	public List<Match> getLastMatches() {
+		return lastMatches;
+	}
+
+	public void setLastMatches(List<Match> lastMatches) {
+		this.lastMatches = lastMatches;
 	}
 
 	@Override

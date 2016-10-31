@@ -1,8 +1,6 @@
 package dotalike.core.service;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +13,6 @@ import dotalike.common.dao.CustomStatisticDao;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.Report;
-import dotalike.common.model.external.PlayerGlobalDetails;
 import dotalike.core.dao.GlobalStatisticDao;
 
 public class DotaDodgeServiceImpl implements DotaDodgeService {
@@ -40,18 +37,19 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 			e.printStackTrace();
 		}
 
-		List<Player> retVal = new ArrayList<>();// customStatisticDao.getPlayers(playersId);
-		playersId.forEach(e -> retVal.add(new Player(e)));
+		//List<Player> retVal = new ArrayList<>();// customStatisticDao.getPlayers(playersId);
+		//playersId.forEach(e -> retVal.add(new Player(e)));
 		// TODO: uncomment, when performance of Dao will be improved
-		List<PlayerGlobalDetails> playersDetails = globalStatisticDao.getPlayersDetails(playersId);
-		for (Player player : retVal) {
-			for (PlayerGlobalDetails playerDetails : playersDetails) {
-				if (player.getSteamId() == playerDetails.getSteamId()) {
-					player.setPlayerDetails(playerDetails);
-					break;
-				}
-			}
-		}
+//		List<Player> playersDetails = globalStatisticDao.getPlayersDetails(playersId);
+//		for (Player player : retVal) {
+//			for (Player playerDetails : playersDetails) {
+//				if (player.getSteamId() == playerDetails.getSteamId()) {
+//					player.setPlayerDetails(playerDetails);
+//					break;
+//				}
+//			}
+//		}
+		List<Player> retVal = globalStatisticDao.getPlayersDetails(playersId);
 		return retVal;
 	}
 
