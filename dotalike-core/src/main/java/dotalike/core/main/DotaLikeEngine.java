@@ -14,26 +14,23 @@ import dotalike.core.file.ServerLogParser;
 import dotalike.core.misc.Configuration;
 import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.misc.Configuration.ConfigurationKey;
-import dotalike.core.service.DotaDodgeService;
+import dotalike.core.service.DotaLikeService;
 
-public class DotaDodge {
+public class DotaLikeEngine {
     
-    private static final Logger logger = LoggerFactory.getLogger(DotaDodge.class);
+    private static final Logger logger = LoggerFactory.getLogger(DotaLikeEngine.class);
     
     @Inject
     private ServerLogParser serverLogParser;
     
     @Inject
-    private DotaDodgeService dotaDodgeService;
+    private DotaLikeService dotaLikeService;
     
-    public DotaDodge() {
+    public DotaLikeEngine() {
     	if (!Configuration.getInstance().read(ConfigurationKey.PROXY).isEmpty()) {
             System.setProperty("http.proxyHost", Configuration.getInstance().read(ConfigurationKey.PROXY));
             System.setProperty("http.proxyPort", Configuration.getInstance().read(ConfigurationKey.PROXY_PORT));
         }
-    }
-    
-    public void run() {
     }
     
     public void dodge() {
@@ -47,14 +44,19 @@ public class DotaDodge {
 			logger.debug("loading players from service");
 			List<Integer> playersIds = new ArrayList<Integer>();
 			match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
-			List<Player> players = dotaDodgeService.getPlayers(playersIds);
+			List<Player> players = dotaLikeService.getPlayers(playersIds);
 			match.setPlayers(players);
 		}
 		return match;
 	}
 
-	public DotaDodgeService getDotaDodgeService() {
-		return dotaDodgeService;
+	public DotaLikeService getDotaLikeService() {
+		return dotaLikeService;
+	}
+	
+	public int getMySteamId() {
+		//TODO
+		return 110645196;
 	}
 
 }

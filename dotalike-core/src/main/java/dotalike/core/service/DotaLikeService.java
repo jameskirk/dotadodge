@@ -7,7 +7,7 @@ import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.Report;
 
-public interface DotaDodgeService {
+public interface DotaLikeService {
 
     public List<Player> getPlayers(List<Integer> playersId);
     

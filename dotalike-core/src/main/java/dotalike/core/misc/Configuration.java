@@ -9,7 +9,7 @@ public class Configuration {
     
     public static String pathFromSteamToDota = "SteamApps\\common\\dota 2 beta\\game\\dota";
     
-    public static final String CONFIG_FILE = "dodadodge.properties";
+    public static final String CONFIG_FILE = "dotalike.properties";
     
     private static Configuration instance;
     

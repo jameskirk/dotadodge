@@ -15,7 +15,7 @@ import dotalike.common.model.Player;
 import dotalike.common.model.Report;
 import dotalike.core.dao.GlobalStatisticDao;
 
-public class DotaDodgeServiceImpl implements DotaDodgeService {
+public class DotaDodgeServiceImpl implements DotaLikeService {
     
     //@Inject
     //CustomStatisticDao customStatisticDao;
@@ -25,7 +25,10 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 
     @Override
     public List<Player> getPlayers(List<Integer> playersId) {
+    	//1. get players from dotabuff
+    	List<Player> retVal = globalStatisticDao.getPlayersDetails(playersId);
     	
+    	//2. get likes, dislikes from our service 
 		try {
 			URL url = new URL("http://localhost:9999/ws/customstatisticdao?wsdl");
 			QName qname = new QName("http://impl.dao.service.dotalike/", "CustomStatisticDaoImplService");
@@ -36,20 +39,7 @@ public class DotaDodgeServiceImpl implements DotaDodgeService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		//List<Player> retVal = new ArrayList<>();// customStatisticDao.getPlayers(playersId);
-		//playersId.forEach(e -> retVal.add(new Player(e)));
-		// TODO: uncomment, when performance of Dao will be improved
-//		List<Player> playersDetails = globalStatisticDao.getPlayersDetails(playersId);
-//		for (Player player : retVal) {
-//			for (Player playerDetails : playersDetails) {
-//				if (player.getSteamId() == playerDetails.getSteamId()) {
-//					player.setPlayerDetails(playerDetails);
-//					break;
-//				}
-//			}
-//		}
-		List<Player> retVal = globalStatisticDao.getPlayersDetails(playersId);
+		
 		return retVal;
 	}
 

@@ -1,8 +1,5 @@
 package dotalike.ui.swing;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -11,31 +8,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dotalike.common.model.Match;
-import dotalike.core.main.DotaDodge;
+import dotalike.core.main.DotaLikeEngine;
 import dotalike.core.misc.GuiceFactory;
 import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.misc.StdOutErrLog;
 
-public class DotaDodgeApplication extends JFrame {
+public class DotaLike extends JFrame {
     
-    private final Logger logger = LoggerFactory.getLogger(DotaDodgeApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(DotaLike.class);
     
     private MatchPanel matchPanel;
     
-    private DotaDodge dotaDodge = GuiceFactory.getInjector().getInstance(DotaDodge.class);
+    private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
-    public DotaDodgeApplication() {
+    public DotaLike() {
         super();
         initUI();
     }
     
     private void initUI() {
-    	setUIFont (new javax.swing.plaf.FontUIResource(new Font("Constantia",Font.BOLD, 18)));
+    	setUIFont (new javax.swing.plaf.FontUIResource(Constants.font));
 
     	matchPanel = new MatchPanel();
         getContentPane().add(matchPanel);
 
-        setTitle("Dota Dodge v0.01");
+        setTitle("Dota Like v0.01");
         setSize(1100, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -43,16 +40,12 @@ public class DotaDodgeApplication extends JFrame {
         setVisible(true);
     }
     
-    private void initCore() {
-	dotaDodge.run();
-    }
-    
     private void timer() {
 	while (true) {
 	    Match currentMatch;
 	    Match previousMatch = matchPanel.getModel();
 	    try {
-		currentMatch = dotaDodge.getCurrentMatch();
+		currentMatch = dotaLikeEngine.getCurrentMatch();
 		if (previousMatch == null || !(currentMatch.getStartDate().equals(previousMatch.getStartDate())))
 		matchPanel.setModel(currentMatch);
 	    } catch (MatchNotStartedException e1) {
@@ -62,6 +55,7 @@ public class DotaDodgeApplication extends JFrame {
 	    try {
 		Thread.sleep(1000);
 	    } catch (InterruptedException e) {
+	    	logger.error("timer was interrupted");
 		e.printStackTrace();
 	    }
 	}
@@ -73,11 +67,10 @@ public class DotaDodgeApplication extends JFrame {
             @Override
             public void run() {
         	StdOutErrLog.tieSystemOutAndErrToLog();
-                final DotaDodgeApplication main = new DotaDodgeApplication();
+                final DotaLike main = new DotaLike();
                 
                 Thread threadCore = new Thread() {
         	    public void run() {
-        		main.initCore();
         		main.timer();
         	    };
         	};

@@ -1,7 +1,7 @@
 apply plugin: 'edu.sc.seis.launch4j'
 
 launch4j {
-    mainClassName = "dotalike.ui.swing.DotaDodgeApplication"
+    mainClassName = "dotalike.ui.swing.DotaLike"
     //icon = 'icons/myApp.ico'
     outfile = 'DotaLike.exe'
     copy {

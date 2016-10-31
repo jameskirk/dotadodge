@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +21,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import dotalike.common.model.Match;
+import dotalike.core.main.DotaLikeEngine;
 import dotalike.core.misc.GuiceFactory;
-import dotalike.core.service.DotaDodgeService;
 
 public class MatchPanel extends JPanel {
     
@@ -47,16 +46,7 @@ public class MatchPanel extends JPanel {
     
     private List<JLabel> soloMMRs = new ArrayList<JLabel>();
     
-    private DotaDodgeService dotaDodgeService = GuiceFactory.getInjector().getInstance(DotaDodgeService.class);
-    
-    private BufferedImage getScaledImage(Image srcImg, int w, int h){
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
-        return resizedImg;
-    }
+    private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
     public MatchPanel() {
 		setLayout(new GridBagLayout());
@@ -86,17 +76,13 @@ public class MatchPanel extends JPanel {
 		firstTeamName.setVisible(false);
 		secondTeamName.setVisible(false);
 		soloMMRHeader.setVisible(false);
-//		reportButtons.forEach(e -> e.setVisible(false));
-		
-		setBackground(new Color(30, 40, 41));
-		Color fontColor = new Color(185, 191, 191);
-		Color fontHeaderColor = new Color(163, 85, 2);
-		header.setForeground(fontColor);
-		firstTeamName.setForeground(fontHeaderColor);
-		secondTeamName.setForeground(fontHeaderColor);
-		soloMMRHeader.setForeground(fontHeaderColor);
-		soloMMRs.forEach(e -> e.setForeground(fontColor));
-		players.forEach(e -> e.setForeground(fontColor));
+		setBackground(Constants.frameBackgroundColor);
+		header.setForeground(Constants.fontColor);
+		firstTeamName.setForeground(Constants.fontHeaderColor);
+		secondTeamName.setForeground(Constants.fontHeaderColor);
+		soloMMRHeader.setForeground(Constants.fontHeaderColor);
+		soloMMRs.forEach(e -> e.setForeground(Constants.fontColor));
+		players.forEach(e -> e.setForeground(Constants.fontColor));
 	}
     
     public Match getModel() {
@@ -107,8 +93,6 @@ public class MatchPanel extends JPanel {
 	if (model == null || model.getPlayers().isEmpty()) {
 	    header.setText("Match not started");
 	    players.forEach(e -> e.setText(""));
-//	    reports.forEach(e -> e.setText(""));
-//	    reportButtons.forEach(e -> e.setVisible(false));
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
 	    soloMMRHeader.setVisible(false);
@@ -124,6 +108,7 @@ public class MatchPanel extends JPanel {
 	    lastHeroes.clear();
 	    likeComponents.forEach( e -> remove(e));
 	    likeComponents.clear();
+	    players.forEach(e -> e.setForeground(Constants.fontColor));
 	    for (int i = 0; i < model.getPlayers().size(); i++) {
 		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
 		if (model.getPlayers().get(i) != null) {
@@ -153,7 +138,6 @@ public class MatchPanel extends JPanel {
 			    			+ ".jpg";
 		    			BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
 		    					+ "\\src\\main\\resources\\" + fileName));
-						//myPicture = getScaledImage(myPicture, 128/2, 72/2);
 		    			myPicture = resize(myPicture, 128/3, 72/2);
 						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 						lastHeroes.add(picLabel);
@@ -175,8 +159,10 @@ public class MatchPanel extends JPanel {
 			}
 		}
 		players.get(i).setText(name);
+		if (model.getPlayers().get(i).getSteamId() == dotaLikeEngine.getMySteamId()) {
+			players.get(i).setForeground(Constants.fontHeaderColor);
+		}
 	    }
-	    
 	}
         this.model = model;
     }
