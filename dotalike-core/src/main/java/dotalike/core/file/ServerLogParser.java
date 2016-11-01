@@ -86,7 +86,7 @@ public class ServerLogParser {
 					throw new MatchNotStartedException();
 				}
 				if (line.contains("Lobby")) {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy - HH:mm:SS");
+					SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy - HH:mm:SS");
 					Date dateInFile = null;
 					try {
 						dateInFile = dateFormat.parse(line.substring(0, 20));
@@ -94,7 +94,7 @@ public class ServerLogParser {
 						e.printStackTrace();
 					}
 					Calendar currentDate = Calendar.getInstance();
-					currentDate.add(Calendar.HOUR, -2);
+					currentDate.add(Calendar.HOUR, -3);
 					if (dateInFile.before(currentDate.getTime())) {
 						logger.trace("date in line server_log.txt too old: " + line.substring(0, 20) 
 								+ " .date in file: " + dateInFile + ", current date:" + currentDate.getTime());

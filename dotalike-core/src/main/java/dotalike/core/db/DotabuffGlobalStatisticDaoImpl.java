@@ -127,7 +127,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 	        return retVal;
     	} catch (SocketTimeoutException e ) {
     		if (timeout < MAX_TIMEOUT) {
-    			logger.error("SocketTimeoutException, timeout will be increased to: " + timeout + 2000);
+    			logger.error("SocketTimeoutException, timeout will be increased to: " + (timeout + 2000));
     			timeout += 2000;
     			return getPlayerDetails(id);
     		} else {

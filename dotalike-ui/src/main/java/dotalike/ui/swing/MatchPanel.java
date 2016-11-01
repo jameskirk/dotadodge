@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,11 +21,16 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dotalike.common.model.Match;
 import dotalike.core.main.DotaLikeEngine;
 import dotalike.core.misc.GuiceFactory;
 
 public class MatchPanel extends JPanel {
+	
+	private final Logger logger = LoggerFactory.getLogger(MatchPanel.class);
     
     private static final int PLAYERS_COUNT = 10;
     
@@ -149,12 +155,16 @@ public class MatchPanel extends JPanel {
 						int iHero = 0;
 						for (Match m : match.getPlayers().get(i).getLastMatches()) {
 							String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero() + ".jpg";
-							BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
-									+ "\\src\\main\\resources\\"
-									+ fileName));
-							myPicture = resize(myPicture, 128 / 3, 72 / 2);
-							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-							lastHeroes.add(picLabel);
+							JLabel picLabel = new JLabel();
+							try {
+								BufferedImage myPicture = ImageIO.read(new File(
+										System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
+								myPicture = resize(myPicture, 128 / 3, 72 / 2);
+								picLabel.setIcon(new ImageIcon(myPicture));
+								lastHeroes.add(picLabel);
+							} catch (IIOException e) {
+								logger.error("Can not find image for: " + m.getPlayersInMatch().get(0).getHero(), e);
+							}
 							Border b;
 							if (m.isWin()) {
 								b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.GREEN);
