@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 
 import dotalike.common.model.Match;
 import dotalike.core.main.DotaLikeEngine;
-import dotalike.core.misc.Configuration;
 import dotalike.core.misc.GuiceFactory;
 
 public class MatchPanel extends JPanel {
@@ -119,6 +118,7 @@ public class MatchPanel extends JPanel {
 			lastHeroes.clear();
 			likeComponents.forEach(e -> remove(e));
 			likeComponents.clear();
+			accountIsPrivateList.forEach(e -> e.setVisible(false));
 			players.forEach(e -> e.setForeground(Constants.fontColor));
 			for (int i = 0; i < match.getPlayers().size(); i++) {
 				String name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
