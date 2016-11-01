@@ -1,6 +1,7 @@
 package dotalike.core.main;
 
 import java.io.FileNotFoundException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DotaLikeEngine {
 	//TODO
 	}
 
-	public Match getCurrentMatch() throws MatchNotStartedException, FileNotFoundException {
+	public Match getCurrentMatch() throws MatchNotStartedException, FileNotFoundException, ConnectException {
 		Match match = serverLogParser.parse();
 
 		if (serverLogParser.isNewMatch()) {

@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import dotalike.common.model.Match;
 import dotalike.core.main.DotaLikeEngine;
+import dotalike.core.misc.Configuration;
 import dotalike.core.misc.GuiceFactory;
 
 public class MatchPanel extends JPanel {
@@ -41,6 +42,8 @@ public class MatchPanel extends JPanel {
     private List<JLabel> players = new ArrayList<JLabel>();
     
     private List<JLabel> lastHeroes = new ArrayList<JLabel>();
+    
+    private List<JLabel> accountIsPrivateList = new ArrayList<JLabel>();
     
     private List<LikeComponent> likeComponents = new ArrayList<>();
     
@@ -66,11 +69,16 @@ public class MatchPanel extends JPanel {
 		    players.add(playerName);
 		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		    JLabel accountIsPrivate = new JLabel("account is private");
+		    accountIsPrivate.setForeground(Constants.fontColor);
+		    accountIsPrivate.setVisible(false);
+			accountIsPrivateList.add(accountIsPrivate);
+			add(accountIsPrivate,  new GridBagConstraints(2, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
+		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 		    JLabel soloMMR = new JLabel("");
 		    soloMMRs.add(soloMMR);
 		    add(soloMMR,  new GridBagConstraints(12, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-			
 		}
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		firstTeamName.setVisible(false);
@@ -121,6 +129,9 @@ public class MatchPanel extends JPanel {
 					}
 					if (name.length() > 15) {
 						name = name.substring(0, 15);
+					}
+					if (match.getPlayers().get(i).isAccountIsPrivate()) {
+						accountIsPrivateList.get(i).setVisible(true);
 					}
 
 					LikeComponent likeComponent = new LikeComponent();
@@ -197,6 +208,7 @@ public class MatchPanel extends JPanel {
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
 	    likeComponents.forEach( e -> remove(e));
 	    likeComponents.clear();
+	    accountIsPrivateList.forEach(e -> e.setVisible(false));
     }
     
 }

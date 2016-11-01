@@ -1,6 +1,7 @@
 package dotalike.ui.swing;
 
 import java.io.FileNotFoundException;
+import java.net.ConnectException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -68,6 +69,8 @@ public class DotaLike extends JFrame {
 				logger.debug("setting empty model in matchPanel");
 			} catch (FileNotFoundException e) {
 				matchPanel.setModel(new MatchPanelModel(new Match(), "Invalid path do dota. File server_log.txt not found"));
+			} catch (ConnectException e) {
+				matchPanel.setModel(new MatchPanelModel(new Match(), "Connection exception. Check our network or proxy"));
 			}
 			try {
 				Thread.sleep(1000);

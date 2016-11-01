@@ -1,15 +1,10 @@
 package dotalike.core.service;
 
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-
 import com.google.inject.Inject;
 
-import dotalike.common.dao.CustomStatisticDao;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.Vote;

@@ -35,6 +35,9 @@ public class Player {
     private Integer soloMmr;
     
     @Transient
+    private boolean accountIsPrivate;
+    
+    @Transient
     private List<Match> lastMatches = new ArrayList<>();
     
     public Player() {
@@ -114,6 +117,14 @@ public class Player {
 
 	public void setLastMatches(List<Match> lastMatches) {
 		this.lastMatches = lastMatches;
+	}
+	
+	public boolean isAccountIsPrivate() {
+		return accountIsPrivate;
+	}
+
+	public void setAccountIsPrivate(boolean accountIsPrivate) {
+		this.accountIsPrivate = accountIsPrivate;
 	}
 
 	@Override
