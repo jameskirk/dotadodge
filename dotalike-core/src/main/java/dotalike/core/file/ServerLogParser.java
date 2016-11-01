@@ -1,6 +1,7 @@
 package dotalike.core.file;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -32,7 +33,7 @@ public class ServerLogParser {
 		logger.debug("Path to server_log.txt: " + getPathToServiceLog());
 	}
 
-	public Match parse() throws MatchNotStartedException {
+	public Match parse() throws MatchNotStartedException, FileNotFoundException {
 		Match match = parseStateless();
 		if (parsedMatches.size() == 0) {
 			parsedMatches.add(match);
@@ -65,7 +66,7 @@ public class ServerLogParser {
 		return false;
 	}
 
-	private Match parseStateless() throws MatchNotStartedException {
+	private Match parseStateless() throws MatchNotStartedException, FileNotFoundException {
 		ReversedLinesFileReader reader = null;
 		try {
 			Match retVal = new Match();
@@ -74,7 +75,7 @@ public class ServerLogParser {
 			File serverLogFile = new File(getPathToServiceLog());
 			if (!serverLogFile.exists()) {
 				logger.error("no log file");
-				throw new RuntimeException("no file");
+				throw new FileNotFoundException("no log file");
 			}
 			reader = new ReversedLinesFileReader(serverLogFile);
 			String line = reader.readLine();
@@ -131,7 +132,7 @@ public class ServerLogParser {
 			return retVal;
 
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new FileNotFoundException();
 
 		} finally {
 			try {

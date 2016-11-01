@@ -1,5 +1,7 @@
 package dotalike.ui.swing;
 
+import java.io.FileNotFoundException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
@@ -54,16 +56,18 @@ public class DotaLike extends JFrame {
 	private void timer() {
 		while (true) {
 			Match currentMatch;
-			Match previousMatch = matchPanel.getModel();
+			Match previousMatch = matchPanel.getModel().getMatch();
 			try {
 				currentMatch = dotaLikeEngine.getCurrentMatch();
 				if (previousMatch == null || !(currentMatch.getStartDate().equals(previousMatch.getStartDate()))) {
-					matchPanel.setModel(currentMatch);
+					matchPanel.setModel(new MatchPanelModel(currentMatch));
 					logger.debug("setting model in matchPanel");
 				}
-			} catch (MatchNotStartedException e1) {
-				matchPanel.setModel(new Match());
+			} catch (MatchNotStartedException e) {
+				matchPanel.setModel(new MatchPanelModel(new Match()));
 				logger.debug("setting empty model in matchPanel");
+			} catch (FileNotFoundException e) {
+				matchPanel.setModel(new MatchPanelModel(new Match(), "Invalid path do dota. File server_log.txt not found"));
 			}
 			try {
 				Thread.sleep(1000);

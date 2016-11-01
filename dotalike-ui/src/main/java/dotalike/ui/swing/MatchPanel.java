@@ -28,7 +28,7 @@ public class MatchPanel extends JPanel {
     
     private static final int PLAYERS_COUNT = 10;
     
-    private Match model = new Match();
+    private MatchPanelModel model = new MatchPanelModel(new Match());
     
     private JLabel header = new JLabel("Loading...");
     
@@ -85,87 +85,89 @@ public class MatchPanel extends JPanel {
 		players.forEach(e -> e.setForeground(Constants.fontColor));
 	}
     
-    public Match getModel() {
+    public MatchPanelModel getModel() {
         return model;
     }
 
-    public void setModel(Match model) {
-	if (model == null || model.getPlayers().isEmpty()) {
-	    header.setText("Match not started");
-	    players.forEach(e -> e.setText(""));
-	    firstTeamName.setVisible(false);
-	    secondTeamName.setVisible(false);
-	    soloMMRHeader.setVisible(false);
-	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
-	    likeComponents.forEach( e -> remove(e));
-	    likeComponents.clear();
-	} else {
-	    header.setText("Current match:");
-	    firstTeamName.setVisible(true);
-	    secondTeamName.setVisible(true);
-	    soloMMRHeader.setVisible(true);
-	    lastHeroes.forEach(e -> { e.setIcon(null); e.setVisible(false); e.repaint(); remove(e);} );
-	    lastHeroes.clear();
-	    likeComponents.forEach( e -> remove(e));
-	    likeComponents.clear();
-	    players.forEach(e -> e.setForeground(Constants.fontColor));
-	    for (int i = 0; i < model.getPlayers().size(); i++) {
-		String name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
-		if (model.getPlayers().get(i) != null) {
-		    name = model.getPlayers().get(i).getNickName();
-		    if (name == null || name.isEmpty()) {
-			name = new Integer(model.getPlayers().get(i).getSteamId()).toString();
-		    }
-		    if (name.length() > 15) {
-		    	name = name.substring(0, 15);
-		    }
-		    
-		    LikeComponent likeComponent = new LikeComponent();
-		    likeComponents.add(likeComponent);
-		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
-		    add(likeComponent,  new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-		            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-		    String soloMMRText = "";
-		    if (model.getPlayers().get(i).getSoloMmr() != null) {
-		    	soloMMRText = model.getPlayers().get(i).getSoloMmr().toString();
-		    }
-		    soloMMRs.get(i).setText(soloMMRText);
-		    
-		    try {
-		    	int iHero = 0;
-		    	for (Match m: model.getPlayers().get(i).getLastMatches()) {
-		    		String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero()
-			    			+ ".jpg";
-		    			BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
-		    					+ "\\src\\main\\resources\\" + fileName));
-		    			myPicture = resize(myPicture, 128/3, 72/2);
-						JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-						lastHeroes.add(picLabel);
-						Border b;
-						if (m.isWin()) {
-							b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.GREEN);
-						} else {
-							b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
+	public void setModel(MatchPanelModel model) {
+		Match match = model.getMatch();
+		if (model.getErrorMessage() != null) {
+			clearPanel();
+			header.setText(model.getErrorMessage());
+		} else if (match == null || match.getPlayers().isEmpty()) {
+			clearPanel();
+			header.setText("Match not started");
+		} else {
+			header.setText("Current match:");
+			firstTeamName.setVisible(true);
+			secondTeamName.setVisible(true);
+			soloMMRHeader.setVisible(true);
+			lastHeroes.forEach(e -> {
+				e.setIcon(null);
+				e.setVisible(false);
+				e.repaint();
+				remove(e);
+			});
+			lastHeroes.clear();
+			likeComponents.forEach(e -> remove(e));
+			likeComponents.clear();
+			players.forEach(e -> e.setForeground(Constants.fontColor));
+			for (int i = 0; i < match.getPlayers().size(); i++) {
+				String name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
+				if (match.getPlayers().get(i) != null) {
+					name = match.getPlayers().get(i).getNickName();
+					if (name == null || name.isEmpty()) {
+						name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
+					}
+					if (name.length() > 15) {
+						name = name.substring(0, 15);
+					}
+
+					LikeComponent likeComponent = new LikeComponent();
+					likeComponents.add(likeComponent);
+					int gridy = i + 2 + (i * 2 / PLAYERS_COUNT);
+					add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
+							new Insets(0, 1, 10, 15), 0, -10));
+					String soloMMRText = "";
+					if (match.getPlayers().get(i).getSoloMmr() != null) {
+						soloMMRText = match.getPlayers().get(i).getSoloMmr().toString();
+					}
+					soloMMRs.get(i).setText(soloMMRText);
+
+					try {
+						int iHero = 0;
+						for (Match m : match.getPlayers().get(i).getLastMatches()) {
+							String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero() + ".jpg";
+							BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") 
+									+ "\\src\\main\\resources\\"
+									+ fileName));
+							myPicture = resize(myPicture, 128 / 3, 72 / 2);
+							JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+							lastHeroes.add(picLabel);
+							Border b;
+							if (m.isWin()) {
+								b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.GREEN);
+							} else {
+								b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
+							}
+							picLabel.setBorder(b);
+							add(picLabel, new GridBagConstraints(2 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+									GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+							iHero++;
 						}
-					    picLabel.setBorder(b);
-						add(picLabel,  new GridBagConstraints(2 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-						            GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
-						iHero++;
-		    	}
-		    	
-				
-			} catch (IOException e1) {
-				e1.printStackTrace();
+
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				players.get(i).setText(name);
+				if (match.getPlayers().get(i).getSteamId() == dotaLikeEngine.getMySteamId()) {
+					players.get(i).setForeground(Constants.fontHeaderColor);
+				}
 			}
 		}
-		players.get(i).setText(name);
-		if (model.getPlayers().get(i).getSteamId() == dotaLikeEngine.getMySteamId()) {
-			players.get(i).setForeground(Constants.fontHeaderColor);
-		}
-	    }
+		this.model = model;
 	}
-        this.model = model;
-    }
     
     public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -184,6 +186,17 @@ public class MatchPanel extends JPanel {
 
     public void setPlayers(List<JLabel> players) {
         this.players = players;
+    }
+    
+    private void clearPanel() {
+    	header.setText("");
+	    players.forEach(e -> e.setText(""));
+	    firstTeamName.setVisible(false);
+	    secondTeamName.setVisible(false);
+	    soloMMRHeader.setVisible(false);
+	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
+	    likeComponents.forEach( e -> remove(e));
+	    likeComponents.clear();
     }
     
 }
