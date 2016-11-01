@@ -127,7 +127,7 @@ public class MatchPanel extends JPanel {
 					likeComponents.add(likeComponent);
 					int gridy = i + 2 + (i * 2 / PLAYERS_COUNT);
 					add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
-							new Insets(0, 1, 10, 15), 0, -10));
+							new Insets(0, 1, 0, 15), 0, 0));
 					String soloMMRText = "";
 					if (match.getPlayers().get(i).getSoloMmr() != null) {
 						soloMMRText = match.getPlayers().get(i).getSoloMmr().toString();
