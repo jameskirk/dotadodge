@@ -1,5 +1,14 @@
 package dotalike.ui.swing;
 
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 
@@ -52,6 +61,8 @@ public class DotaLike extends JFrame {
 		Provider provider = Provider.getCurrentProvider(true);
 		provider.register(KeyStroke.getKeyStroke("control shift Z"), new CloseOpenHotKeyListener(this));
 		
+		// tray
+		//setTrayIcon();
 	}
 
 	private void timer() {
@@ -108,5 +119,35 @@ public class DotaLike extends JFrame {
 			}
 		}
 	}
+	
+	private static void setTrayIcon() {
+	    if(! SystemTray.isSupported() ) {
+	      return;
+	    }
+
+	    PopupMenu trayMenu = new PopupMenu();
+	    MenuItem item = new MenuItem("Exit");
+	    item.addActionListener(new ActionListener() {
+	      @Override
+	      public void actionPerformed(ActionEvent e) {
+	        System.exit(0);
+	      }
+	    });
+	    trayMenu.add(item);
+
+	    Image icon = Toolkit.getDefaultToolkit().getImage(System.getProperty("user.dir") + "\\src\\main\\resources\\img\\windowIcon.png");
+	    TrayIcon trayIcon = new TrayIcon(icon, "TRAY ICON NAME", trayMenu);
+	    trayIcon.setImageAutoSize(true);
+
+	    SystemTray tray = SystemTray.getSystemTray();
+	    try {
+	      tray.add(trayIcon);
+	    } catch (AWTException e) {
+	      e.printStackTrace();
+	    }
+
+	    trayIcon.displayMessage("TRAY ICON NAME", "Application started!",
+	                            TrayIcon.MessageType.INFO);
+	  }
 
 }
