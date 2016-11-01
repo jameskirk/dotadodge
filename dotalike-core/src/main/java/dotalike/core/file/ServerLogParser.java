@@ -96,7 +96,8 @@ public class ServerLogParser {
 					Calendar currentDate = Calendar.getInstance();
 					currentDate.add(Calendar.HOUR, -2);
 					if (dateInFile.before(currentDate.getTime())) {
-						logger.trace("date in line server_log.txt too old: " + line.substring(0, 20));
+						logger.trace("date in line server_log.txt too old: " + line.substring(0, 20) 
+								+ " .date in file: " + dateInFile + ", current date:" + currentDate.getTime());
 						throw new MatchNotStartedException();
 					}
 					retVal.setStartDate(dateInFile);
