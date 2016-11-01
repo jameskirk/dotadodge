@@ -2,11 +2,15 @@ apply plugin: 'edu.sc.seis.launch4j'
 
 launch4j {
     mainClassName = "dotalike.ui.swing.DotaLike"
-    //icon = 'icons/myApp.ico'
+    icon = 'src/main/resources/img/windowIcon.ico'
     outfile = 'DotaLike.exe'
     copy {
     	from 'src/main/resources/heroes'
     	into 'build/launch4j/src/main/resources/heroes'
+	}
+	copy {
+    	from 'src/main/resources/img'
+    	into 'build/launch4j/src/main/resources/img'
 	}
 	
 }
