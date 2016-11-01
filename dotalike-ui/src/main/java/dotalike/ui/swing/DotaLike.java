@@ -1,5 +1,6 @@
 package dotalike.ui.swing;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -36,6 +37,8 @@ public class DotaLike extends JFrame {
 		getContentPane().add(matchPanel);
 
 		setTitle("Dota Like v0.01");
+		ImageIcon img = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\resources\\img\\windowIcon.png");
+		setIconImage(img.getImage());
 		setSize(1100, 550);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
