@@ -3,13 +3,13 @@ Programm for dota<br>
 
 
 <b>How to run</b>
-Download ALL(!) files https://www.dropbox.com/sh/binczpcz7n8mtde/AACSTugfundyOgzu37C2JaJva?dl=0 and execute DotaPlus.exe
+Download ALL(!) files https://www.dropbox.com/sh/98az20sps47yqmb/AADp4mshizrGpING_vanpPy4a?dl=0 and execute DotaLike.exe
 
 <b>How to build:</b>
 A)in console:<br>
- #cd dotadodge-ui<br>
+ #cd dotalike-ui<br>
  #gradle.exe createExe<br>
-you can find binary in dotadodge-ui\build\launch4j\DotaPlus.exe
+you can find binary in dotalike-ui\build\launch4j\DotaPlus.exe
 
 B)in eclipse:
-import projects: dotadoge-core, dotadoge-ui, dx4j. Convert it to Gradle projects. Run class dotadodge.ui.swing.DotaDodgeApplication.
+import projects: dotalike-common, dotalike-core, dotalike-ui, dotalike-service. Convert it to Gradle projects. Run class dotalike.ui.swing.DotaLike.
