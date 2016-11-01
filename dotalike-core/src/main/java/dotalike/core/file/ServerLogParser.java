@@ -20,6 +20,7 @@ import dotalike.common.model.Player;
 import dotalike.core.misc.Configuration;
 import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.misc.WinRegistry;
+import dotalike.core.misc.Configuration.ConfigurationKey;
 
 public class ServerLogParser {
 
@@ -153,14 +154,15 @@ public class ServerLogParser {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		if ("test".equals(System.getProperties().getProperty("env"))) {
+		if ("test".equals(Configuration.getInstance().read(ConfigurationKey.ENV))) {
 			return System.getProperty("user.dir") + "\\server_log.txt";
 		}
-		String pathToServerLog = pathToSteam + "\\" + Configuration.pathFromSteamToDota + "\\" + filenameOfServerLog; // TODO:
-																														// determine
-																														// real
-																														// dota
-																														// path
+		String pathToServerLog = pathToSteam + "\\" + Configuration.pathFromSteamToDota + "\\" + filenameOfServerLog; 
+		// TODO:
+		// determine
+		// real
+		// dota
+		// path
 		return pathToServerLog;
 	}
 

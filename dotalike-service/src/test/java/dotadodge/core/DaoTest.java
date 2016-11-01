@@ -9,7 +9,7 @@ import com.google.inject.Injector;
 
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
-import dotalike.common.model.Report;
+import dotalike.common.model.Vote;
 import dotalike.service.db.ApplicationInitializer;
 import dotalike.service.db.JPA;
 import dotalike.service.misc.GuiceFactory;
@@ -25,7 +25,7 @@ public class DaoTest {
 	Match m = new Match();
 	tx.begin();
 	
-	Report r = new Report();
+	Vote r = new Vote();
 	r.setStars(1);
 	r.setDescription("noob");
 	m.getPlayers().add(new Player(123));

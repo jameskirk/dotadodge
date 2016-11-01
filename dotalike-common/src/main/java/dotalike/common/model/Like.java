@@ -15,7 +15,7 @@ public class Like {
 	private boolean isPositive;
 	
 	@ManyToOne
-	private Player forPlayer;
+	private Player byPlayer;
 
 	public int getId() {
 		return id;
@@ -33,12 +33,12 @@ public class Like {
 		this.isPositive = isPositive;
 	}
 
-	public Player getForPlayer() {
-		return forPlayer;
+	public Player getByPlayer() {
+		return byPlayer;
 	}
 
-	public void setForPlayer(Player forPlayer) {
-		this.forPlayer = forPlayer;
+	public void setbyPlayer(Player forPlayer) {
+		this.byPlayer = forPlayer;
 	}
 	
 }

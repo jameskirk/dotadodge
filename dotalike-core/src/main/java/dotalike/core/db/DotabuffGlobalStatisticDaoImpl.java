@@ -96,7 +96,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 								.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
 								.evaluate(doc).getElements().get(0).text());
 					}
-					logger.info(id + " " + hero + " " + win + " " + soloMmr);
+					logger.trace(id + " " + hero + " " + win + " " + soloMmr);
 					Match match = new Match();
 					PlayerInMatch player = new PlayerInMatch();
 					player.setHero(hero);

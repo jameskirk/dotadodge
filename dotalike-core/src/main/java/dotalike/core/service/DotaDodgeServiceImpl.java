@@ -12,7 +12,7 @@ import com.google.inject.Inject;
 import dotalike.common.dao.CustomStatisticDao;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
-import dotalike.common.model.Report;
+import dotalike.common.model.Vote;
 import dotalike.core.dao.GlobalStatisticDao;
 
 public class DotaDodgeServiceImpl implements DotaLikeService {
@@ -29,16 +29,16 @@ public class DotaDodgeServiceImpl implements DotaLikeService {
     	List<Player> retVal = globalStatisticDao.getPlayersDetails(playersId);
     	
     	//2. get likes, dislikes from our service 
-		try {
-			URL url = new URL("http://localhost:9999/ws/customstatisticdao?wsdl");
-			QName qname = new QName("http://impl.dao.service.dotalike/", "CustomStatisticDaoImplService");
-			Service service = Service.create(url, qname);
-			CustomStatisticDao customStatisticDao = service.getPort(CustomStatisticDao.class);
-			System.out.println(customStatisticDao.getTime("mkyong"));
-			System.out.println(customStatisticDao.getPlayers(playersId));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			URL url = new URL("http://localhost:9999/ws/customstatisticdao?wsdl");
+//			QName qname = new QName("http://impl.dao.service.dotalike/", "CustomStatisticDaoImplService");
+//			Service service = Service.create(url, qname);
+//			CustomStatisticDao customStatisticDao = service.getPort(CustomStatisticDao.class);
+//			System.out.println(customStatisticDao.getTime("mkyong"));
+//			System.out.println(customStatisticDao.getPlayers(playersId));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		return retVal;
 	}
@@ -50,7 +50,7 @@ public class DotaDodgeServiceImpl implements DotaLikeService {
     }
 
     @Override
-    public void report(Report report, Integer toSteamId, Date toMatchDate) {
+    public void report(Vote report, Integer toSteamId, Date toMatchDate) {
 	//customStatisticDao.reportPlayer(report, toSteamId, toMatchDate);
 	
     }

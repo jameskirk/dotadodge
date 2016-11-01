@@ -25,5 +25,6 @@ buildscript {
 
 
 dependencies {
-    compile project(':dotalike-core')
+    compile project(':dotalike-core'),
+    	    'com.github.tulskiy:jkeymaster:1.2'
 }

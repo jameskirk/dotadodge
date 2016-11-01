@@ -8,7 +8,7 @@ import javax.persistence.EntityTransaction;
 
 import dotalike.common.dao.CustomStatisticDao;
 import dotalike.common.model.Player;
-import dotalike.common.model.Report;
+import dotalike.common.model.Vote;
 import dotalike.common.model.dto.PlayersList;
 import dotalike.service.db.JPA;
 
@@ -37,7 +37,7 @@ public class CustomStatisticDaoImpl implements CustomStatisticDao {
 		return retVal;
 	}
     
-    public void reportPlayer(Report report, int toSteamId, Date toMatchDate) {
+    public void reportPlayer(Vote report, int toSteamId, Date toMatchDate) {
 //		EntityTransaction tx = JPA.em().getTransaction();
 //		tx.begin();
 //		Player p = JPA.findById(Player.class, toSteamId);

@@ -5,7 +5,7 @@ import java.util.List;
 
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
-import dotalike.common.model.Report;
+import dotalike.common.model.Vote;
 
 public interface DotaLikeService {
 
@@ -13,5 +13,5 @@ public interface DotaLikeService {
     
     public List<Match> getMatchHistory(Integer playerId);
     
-    public void report(Report report, Integer toSteamId, Date toMatchDate); 
+    public void report(Vote report, Integer toSteamId, Date toMatchDate); 
 }

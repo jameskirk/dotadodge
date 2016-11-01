@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
 import dotalike.common.model.Player;
-import dotalike.common.model.Report;
+import dotalike.common.model.Vote;
 import dotalike.common.model.dto.PlayersList;
 
 @WebService
