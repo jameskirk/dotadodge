@@ -3,7 +3,7 @@ Programm for dota<br>
 
 
 <b>How to run</b>
-Download ALL(!) files https://www.dropbox.com/sh/98az20sps47yqmb/AADp4mshizrGpING_vanpPy4a?dl=0 and execute DotaLike.exe
+Download ALL(!) files https://gyazo.com/738d0dd36e64d5263bab70843d438fa0.png and execute DotaLike.exe
 
 <b>How to build:</b>
 A)in console:<br>
