@@ -89,16 +89,20 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 	        if (accountIsPrivateElement != null && accountIsPrivateElement.text().contains("private")) {
 	        	accountIsPrivate = true;
 	        }
+	        try {
 	        boolean soloMmrIsPresent =  Xsoup
-					.compile("//*[@class='header-content-secondary']/dl[2]/dt[1]")
-					.evaluate(doc).getElements().get(0).text().equalsIgnoreCase("Solo MMR");
-			Integer soloMmr = null;
-			if (soloMmrIsPresent) {
-				soloMmr = Integer.valueOf(Xsoup
-						.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
-						.evaluate(doc).getElements().get(0).text());
+						.compile("//*[@class='header-content-secondary']/dl[2]/dt[1]")
+						.evaluate(doc).getElements().get(0).text().equalsIgnoreCase("Solo MMR");
+				Integer soloMmr = null;
+				if (soloMmrIsPresent) {
+					soloMmr = Integer.valueOf(Xsoup
+							.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
+							.evaluate(doc).getElements().get(0).text());
+				}
+				retVal.setSoloMmr(soloMmr);
+	        } catch (Exception e) {
+				logger.error("can not parse soloMMR, steamId=" + id, e);
 			}
-			retVal.setSoloMmr(soloMmr);
 			
 	        if (!accountIsPrivate) {
 				for (int i = 0; i < 10; i++) {
@@ -112,7 +116,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 										+ new Integer(i + 1).toString() + "]/div[2]//a")
 								.evaluate(doc).getElements().get(0).text();
 						
-						logger.trace(id + " " + hero + " " + win + " " + soloMmr);
+						logger.trace(id + " " + hero + " " + win + " ");
 						Match match = new Match();
 						PlayerInMatch player = new PlayerInMatch();
 						player.setHero(hero);
