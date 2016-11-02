@@ -3,6 +3,8 @@ package dotalike.core.db;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
@@ -14,11 +16,11 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import us.codecraft.xsoup.Xsoup;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.external.PlayerInMatch;
 import dotalike.core.dao.GlobalStatisticDao;
+import us.codecraft.xsoup.Xsoup;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
@@ -37,7 +39,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 
     @Override
     public List<Player> getPlayersDetails(List<Integer> ids) {
-        List<Player> retVal = new Vector<>();
+        List<Player> retValNotSorted = new Vector<>();
         final CyclicBarrier barrier = new CyclicBarrier(11);
         for (Integer id : ids) {
         	
@@ -45,7 +47,7 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 				@Override
 				public void run() {
 					try {
-			            retVal.add(getPlayerDetails(id));
+			            retValNotSorted.add(getPlayerDetails(id));
 						barrier.await();
 					} catch (InterruptedException | BrokenBarrierException |ConnectException e) {
 						e.printStackTrace();
@@ -60,7 +62,12 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 		} catch (InterruptedException | BrokenBarrierException e) {
 			e.printStackTrace();
 		}
-
+        
+        List<Player> retVal = new ArrayList<>();
+        for (Integer id: ids) {
+        	Player p = retValNotSorted.stream().filter(e -> e.getSteamId() == id.intValue()).findFirst().orElse(null);
+        	retVal.add(p);
+        }
         return retVal;
     }
     
@@ -82,7 +89,17 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 	        if (accountIsPrivateElement != null && accountIsPrivateElement.text().contains("private")) {
 	        	accountIsPrivate = true;
 	        }
-	        
+	        boolean soloMmrIsPresent =  Xsoup
+					.compile("//*[@class='header-content-secondary']/dl[2]/dt[1]")
+					.evaluate(doc).getElements().get(0).text().equalsIgnoreCase("Solo MMR");
+			Integer soloMmr = null;
+			if (soloMmrIsPresent) {
+				soloMmr = Integer.valueOf(Xsoup
+						.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
+						.evaluate(doc).getElements().get(0).text());
+			}
+			retVal.setSoloMmr(soloMmr);
+			
 	        if (!accountIsPrivate) {
 				for (int i = 0; i < 10; i++) {
 					try {
@@ -94,20 +111,11 @@ public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 								.compile("//*[@class='r-table r-only-mobile-5 performances-overview']/div["
 										+ new Integer(i + 1).toString() + "]/div[2]//a")
 								.evaluate(doc).getElements().get(0).text();
-						boolean soloMmrIsPresent =  Xsoup
-								.compile("//*[@class='header-content-secondary']/dl[2]/dt[1]")
-								.evaluate(doc).getElements().get(0).text().equalsIgnoreCase("Solo MMR");
-						Integer soloMmr = null;
-						if (soloMmrIsPresent) {
-							soloMmr = Integer.valueOf(Xsoup
-									.compile("//*[@class='header-content-secondary']/dl[2]/dd[1]")
-									.evaluate(doc).getElements().get(0).text());
-						}
+						
 						logger.trace(id + " " + hero + " " + win + " " + soloMmr);
 						Match match = new Match();
 						PlayerInMatch player = new PlayerInMatch();
 						player.setHero(hero);
-						retVal.setSoloMmr(soloMmr);
 						boolean isWin = "Won Match".equals(win);
 						match.getPlayersInMatch().add(player);
 						match.setWin(isWin);
