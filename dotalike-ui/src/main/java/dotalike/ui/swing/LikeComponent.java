@@ -24,9 +24,9 @@ public class LikeComponent extends JPanel {
 	
 	private JLabel dislikeCountLabel;
 	
-	private Integer likeCount = new Integer(0);
+	private Integer likeCount = 0;
 	
-	private Integer dislikeCount = new Integer(0);
+	private Integer dislikeCount = 0;
 	
 	private boolean isLiked;
 	
@@ -145,6 +145,22 @@ public class LikeComponent extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void setVisible(boolean aFlag) {
+		super.setVisible(aFlag);
+		likeLabel.setVisible(aFlag);
+		dislikeLabel.setVisible(aFlag);
+		likeCountLabel.setVisible(aFlag);
+		dislikeCountLabel.setVisible(aFlag);
+	}
+	
+	public void clear() {
+		setLikeCount(0);
+		setDislikeCount(0);
+		setLiked(false);
+		setDisliked(false);
 	}
 	
 }

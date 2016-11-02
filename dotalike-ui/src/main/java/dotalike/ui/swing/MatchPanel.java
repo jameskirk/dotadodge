@@ -74,12 +74,20 @@ public class MatchPanel extends JPanel {
 		    players.add(playerName);
 		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		    // 2a. like
+		    LikeComponent likeComponent = new LikeComponent();
+			likeComponents.add(likeComponent);
+			likeComponent.setVisible(false);
+			add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
+					new Insets(0, 1, 0, 15), 0, 0));
+			// 2b. label private account
 		    JLabel accountIsPrivate = new JLabel("account is private");
 		    accountIsPrivate.setForeground(Constants.fontColor);
 		    accountIsPrivate.setVisible(false);
 			accountIsPrivateList.add(accountIsPrivate);
 			add(accountIsPrivate,  new GridBagConstraints(2, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+			// 3. solo mmr
 		    JLabel soloMMR = new JLabel("");
 		    soloMMRs.add(soloMMR);
 		    add(soloMMR,  new GridBagConstraints(12, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
@@ -122,9 +130,9 @@ public class MatchPanel extends JPanel {
 				remove(e);
 			});
 			lastHeroes.clear();
-			likeComponents.forEach(e -> remove(e));
-			likeComponents.clear();
+			likeComponents.forEach(e -> { e.setVisible(true); e.clear(); } );
 			accountIsPrivateList.forEach(e -> e.setVisible(false));
+			soloMMRs.forEach(e -> e.setText(""));
 			players.forEach(e -> e.setForeground(Constants.fontColor));
 			for (int i = 0; i < match.getPlayers().size(); i++) {
 				String name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
@@ -140,11 +148,7 @@ public class MatchPanel extends JPanel {
 						accountIsPrivateList.get(i).setVisible(true);
 					}
 
-					LikeComponent likeComponent = new LikeComponent();
-					likeComponents.add(likeComponent);
 					int gridy = i + 2 + (i * 2 / PLAYERS_COUNT);
-					add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
-							new Insets(0, 1, 0, 15), 0, 0));
 					String soloMMRText = "";
 					if (match.getPlayers().get(i).getSoloMmr() != null) {
 						soloMMRText = match.getPlayers().get(i).getSoloMmr().toString();
@@ -216,9 +220,9 @@ public class MatchPanel extends JPanel {
 	    secondTeamName.setVisible(false);
 	    soloMMRHeader.setVisible(false);
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
-	    likeComponents.forEach( e -> remove(e));
-	    likeComponents.clear();
+	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
 	    accountIsPrivateList.forEach(e -> e.setVisible(false));
+	    soloMMRs.forEach(e -> e.setText(""));
     }
     
 }
