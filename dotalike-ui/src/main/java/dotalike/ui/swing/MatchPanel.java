@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,7 +20,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -57,8 +55,6 @@ public class MatchPanel extends JPanel {
     private List<LikeComponent> likeComponents = new ArrayList<>();
     
     private List<JLabel> soloMMRs = new ArrayList<JLabel>();
-    
-    private BufferedImage backgroundImage;
     
     private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
@@ -110,12 +106,6 @@ public class MatchPanel extends JPanel {
 		soloMMRHeader.setForeground(Constants.fontHeaderColor);
 		soloMMRs.forEach(e -> e.setForeground(Constants.fontColor));
 		players.forEach(e -> e.setForeground(Constants.fontColor));
-		try {
-			backgroundImage= ImageIO.read(new File(
-					System.getProperty("user.dir") + "\\src\\main\\resources\\" + "img\\matchPanelBackground.png"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
     
     public MatchPanelModel getModel() {
