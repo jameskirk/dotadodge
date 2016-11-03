@@ -1,11 +1,14 @@
 package dotalike.ui.swing;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +57,8 @@ public class MatchPanel extends JPanel {
     
     private List<JLabel> soloMMRs = new ArrayList<JLabel>();
     
+    private BufferedImage backgroundImage;
+    
     private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
     public MatchPanel() {
@@ -79,7 +84,7 @@ public class MatchPanel extends JPanel {
 			likeComponents.add(likeComponent);
 			likeComponent.setVisible(false);
 			add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
-					new Insets(0, 1, 0, 15), 0, 0));
+					new Insets(5, 1, 5, 15), 0, 0));
 			// 2b. label private account
 		    JLabel accountIsPrivate = new JLabel("account is private");
 		    accountIsPrivate.setForeground(Constants.fontColor);
@@ -104,6 +109,12 @@ public class MatchPanel extends JPanel {
 		soloMMRHeader.setForeground(Constants.fontHeaderColor);
 		soloMMRs.forEach(e -> e.setForeground(Constants.fontColor));
 		players.forEach(e -> e.setForeground(Constants.fontColor));
+		try {
+			backgroundImage= ImageIO.read(new File(
+					System.getProperty("user.dir") + "\\src\\main\\resources\\" + "img\\matchPanelBackground.png"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
     
     public MatchPanelModel getModel() {
@@ -223,6 +234,33 @@ public class MatchPanel extends JPanel {
 	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
 	    accountIsPrivateList.forEach(e -> e.setVisible(false));
 	    soloMMRs.forEach(e -> e.setText(""));
+    }
+    
+    @Override
+    public void paint(Graphics g) {
+    	super.paint(g);
+    	if (header.getText().equals("Current match:")) {
+	        Graphics2D g2 = (Graphics2D) g;
+	        for (int i=0; i<4; i++) {
+	        	int y = 106 + i*43;
+	        	drawLine(g2, y);
+	        }
+	        for (int i=0; i<4; i++) {
+	        	int y = 344 + i*43;
+	        	drawLine(g2, y);
+	        }
+        }
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+    }
+    
+    private void drawLine(Graphics2D g2, int y) {
+    	Line2D lin = new Line2D.Float(45, y, 1050, y);
+        Line2D lin2 = new Line2D.Float(45, y+1, 1050, y+1);
+        g2.draw(lin);
+        g2.draw(lin2);
     }
     
 }

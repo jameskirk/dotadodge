@@ -78,13 +78,13 @@ public class LikeComponent extends JPanel {
 		
 		setLayout(new GridBagLayout());
 		add(likeLabel,  new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
-		            GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		            GridBagConstraints.NONE, new Insets(-3, 0, 0, 0), 0, 0));
 		add(dislikeLabel,  new GridBagConstraints(1, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
-		            GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		            GridBagConstraints.NONE, new Insets(-3, 0, 0, 0), 0, 0));
 		add(likeCountLabel,  new GridBagConstraints(0, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(-3, 7, 0, 0), 0, 0));
+	            GridBagConstraints.NONE, new Insets(-6, 7, 0, 0), 0, 0));
 	    add(dislikeCountLabel,  new GridBagConstraints(1, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
-	            GridBagConstraints.NONE, new Insets(-3, 7, 0, 0), 0, 0));
+	            GridBagConstraints.NONE, new Insets(-6, 7, 0, 0), 0, 0));
 	}
 
 	public Integer getLikeCount() {
