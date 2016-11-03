@@ -131,20 +131,8 @@ public class MatchPanel extends JPanel {
 			clearPanel();
 			header.setText("Match not started");
 		} else {
+			clearPanel();
 			header.setText("Current match:");
-			firstTeamName.setVisible(true);
-			secondTeamName.setVisible(true);
-			soloMMRHeader.setVisible(true);
-			lastHeroes.forEach(e -> {
-				e.setIcon(null);
-				e.setVisible(false);
-				e.repaint();
-				remove(e);
-			});
-			lastHeroes.clear();
-			likeComponents.forEach(e -> { e.setVisible(true); e.clear(); } );
-			accountIsPrivateList.forEach(e -> e.setVisible(false));
-			soloMMRs.forEach(e -> e.setText(""));
 			players.forEach(e -> e.setForeground(Constants.fontColor));
 			for (int i = 0; i < match.getPlayers().size(); i++) {
 				String name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
@@ -202,6 +190,7 @@ public class MatchPanel extends JPanel {
 					players.get(i).setForeground(Constants.fontHeaderColor);
 				}
 			}
+			setVisibleForAll();
 		}
 		this.model = model;
 	}
@@ -225,18 +214,6 @@ public class MatchPanel extends JPanel {
         this.players = players;
     }
     
-    private void clearPanel() {
-    	header.setText("");
-	    players.forEach(e -> e.setText(""));
-	    firstTeamName.setVisible(false);
-	    secondTeamName.setVisible(false);
-	    soloMMRHeader.setVisible(false);
-	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
-	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
-	    accountIsPrivateList.forEach(e -> e.setVisible(false));
-	    soloMMRs.forEach(e -> e.setText(""));
-    }
-    
     @Override
     public void paint(Graphics g) {
     	super.paint(g);
@@ -255,6 +232,27 @@ public class MatchPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+    }
+    
+    private void clearPanel() {
+    	header.setText("");
+	    players.forEach(e -> e.setText(""));
+	    firstTeamName.setVisible(false);
+	    secondTeamName.setVisible(false);
+	    soloMMRs.forEach(e -> e.setText(""));
+	    soloMMRHeader.setVisible(false);
+	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
+	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
+	    accountIsPrivateList.forEach(e -> e.setVisible(false));
+	    soloMMRs.forEach(e -> e.setText(""));
+    }
+    
+    private void setVisibleForAll() {
+    	firstTeamName.setVisible(true);
+		secondTeamName.setVisible(true);
+		soloMMRHeader.setVisible(true);
+		likeComponents.forEach(e -> { e.setVisible(true); } );
+		soloMMRs.forEach(e -> e.setVisible(true));
     }
     
     private void drawLine(Graphics2D g2, int y) {
