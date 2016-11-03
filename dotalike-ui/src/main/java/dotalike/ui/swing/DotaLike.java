@@ -51,7 +51,7 @@ public class DotaLike extends JFrame {
 		setTitle("Dota Like v0.01b. Ctrl+Shift+Z for close-open");
 		ImageIcon img = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\resources\\img\\windowIcon.png");
 		setIconImage(img.getImage());
-		setSize(1100, 550);
+		setSize(1100, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);

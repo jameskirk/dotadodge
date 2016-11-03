@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -242,11 +243,11 @@ public class MatchPanel extends JPanel {
     	if (header.getText().equals("Current match:")) {
 	        Graphics2D g2 = (Graphics2D) g;
 	        for (int i=0; i<4; i++) {
-	        	int y = 106 + i*43;
+	        	int y = 130 + i*43;
 	        	drawLine(g2, y);
 	        }
 	        for (int i=0; i<4; i++) {
-	        	int y = 344 + i*43;
+	        	int y = 368 + i*43;
 	        	drawLine(g2, y);
 	        }
         }
