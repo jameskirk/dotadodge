@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
@@ -16,11 +15,11 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import us.codecraft.xsoup.Xsoup;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.external.PlayerInMatch;
 import dotalike.core.dao.GlobalStatisticDao;
-import us.codecraft.xsoup.Xsoup;
 
 public class DotabuffGlobalStatisticDaoImpl implements GlobalStatisticDao {
 

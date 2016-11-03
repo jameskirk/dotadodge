@@ -10,7 +10,7 @@ import dotalike.common.model.Player;
 import dotalike.common.model.Vote;
 import dotalike.core.dao.GlobalStatisticDao;
 
-public class DotaDodgeServiceImpl implements DotaLikeService {
+public class DotaLikeServiceImpl implements DotaLikeService {
     
     //@Inject
     //CustomStatisticDao customStatisticDao;
@@ -46,7 +46,6 @@ public class DotaDodgeServiceImpl implements DotaLikeService {
 
     @Override
     public void report(Vote report, Integer toSteamId, Date toMatchDate) {
-	//customStatisticDao.reportPlayer(report, toSteamId, toMatchDate);
 	
     }
 
