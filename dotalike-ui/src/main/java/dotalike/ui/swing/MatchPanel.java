@@ -97,7 +97,7 @@ public class MatchPanel extends JPanel {
 		    JLabel soloMMR = new JLabel("");
 		    soloMMRs.add(soloMMR);
 		    add(soloMMR,  new GridBagConstraints(12, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		            GridBagConstraints.NONE, new Insets(0, 20, 10, 15), 0, 0));
 		}
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		firstTeamName.setVisible(false);
