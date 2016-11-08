@@ -89,6 +89,25 @@ public class DotaLikeEngine {
 				s.setMatchesWithHero(maxCount);
 				s.setAllMatches(mh.getMatches().size());
 				retVal.getMatch().getPlayers().get(i).getSignatures().add(s);
+				
+				heroStatistic.remove(maxHero);
+				maxHero = "";
+				maxCount = 0;
+				for (Entry<String, Integer> e: heroStatistic.entrySet()) {
+					if (maxCount < e.getValue()) {
+						maxCount = e.getValue();
+						maxHero = e.getKey();
+					}
+				}
+				if (maxCount != 0) {
+					logger.info("signature2: " + mh.getPlayer().getNickName() + ", " 
+							+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
+				}
+				s = new Signature();
+				s.setHero(maxHero);
+				s.setMatchesWithHero(maxCount);
+				s.setAllMatches(mh.getMatches().size());
+				retVal.getMatch().getPlayers().get(i).getSignatures().add(s);
 			}
 		}
 		return retVal;

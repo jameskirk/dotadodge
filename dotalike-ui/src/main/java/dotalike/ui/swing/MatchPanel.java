@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dotalike.common.model.Match;
+import dotalike.common.model.external.Signature;
 import dotalike.core.main.DotaLikeEngine;
 import dotalike.core.main.MatchPanelModel;
 import dotalike.core.misc.GuiceFactory;
@@ -65,11 +66,11 @@ public class MatchPanel extends JPanel {
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
 		add(secondTeamName,  new GridBagConstraints(0, 1 + PLAYERS_COUNT/2 + 1, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
-		add(signatureHeader,  new GridBagConstraints(2, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+		add(signatureHeader,  new GridBagConstraints(2, 1, 2, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-		add(lastHeroesHeader,  new GridBagConstraints(3, 1, 10, 1, 0, 0, GridBagConstraints.CENTER,
+		add(lastHeroesHeader,  new GridBagConstraints(4, 1, 10, 1, 0, 0, GridBagConstraints.CENTER,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-		add(soloMMRHeader,  new GridBagConstraints(13, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+		add(soloMMRHeader,  new GridBagConstraints(14, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 0), 0, 0));
 		
 		for (int i=0; i<PLAYERS_COUNT; i++) {
@@ -84,23 +85,27 @@ public class MatchPanel extends JPanel {
 			add(row.getLikeComponent(), new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
 					new Insets(5, 1, 5, 15), 0, 0));
 			// 3. signature
-			for (JLabel s: row.getSignatures()) {
-			    add(s, new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.CENTER,
-			            GridBagConstraints.NONE, new Insets(0, 0, 10, 30), 0, 0));
+			for (int j=0; j<row.getSignatures().size(); j++) {
+				int paddingRight = 10;
+				if (j == row.getSignatures().size() - 1) {
+					paddingRight = 30;
+				}
+			    add(row.getSignatures().get(j), new GridBagConstraints(2 + j, gridy, 1, 1, 0, 0, GridBagConstraints.CENTER,
+			            GridBagConstraints.NONE, new Insets(0, 0, 10, paddingRight), 0, 0));
 			}
 			
 			// 4. label private account
-			add(row.getAccountIsPrivate(),  new GridBagConstraints(3, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
+			add(row.getAccountIsPrivate(),  new GridBagConstraints(4, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 			
 			// 4b. last heroes
 			for (int j=0; j<row.getLastHeroes().size(); j++) {
-				add(row.getLastHeroes().get(j), new GridBagConstraints(3 + j, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+				add(row.getLastHeroes().get(j), new GridBagConstraints(4 + j, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 						GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 			}
 			
 			// 5. solo mmr
-		    add(row.getSoloMMR(),  new GridBagConstraints(13, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		    add(row.getSoloMMR(),  new GridBagConstraints(14, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 20, 10, 15), 0, 0));
 		    
 		}
@@ -153,15 +158,18 @@ public class MatchPanel extends JPanel {
 					}
 					rows.get(i).getSoloMMR().setText(soloMMRText);
 
-					if (match.getPlayers().get(i).getSignatures().get(0).getAllMatches() != 0) {
-						try {
-							String fileName = "heroes\\" + match.getPlayers().get(i).getSignatures().get(0).getHero() + ".jpg";
-							BufferedImage myPicture = ImageIO.read(new File(
-									System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
-							myPicture = resize(myPicture, 128 / 3, 72 / 5 * 2);
-							rows.get(i).getSignatures().get(0).setIcon(new ImageIcon(myPicture));
-						} catch (IOException e) {
-							logger.error("Can not find image for: " + match.getPlayers().get(i).getSignatures().get(i).getHero(), e);
+					for (int j=0; j<match.getPlayers().get(i).getSignatures().size(); j++) {
+						Signature s = match.getPlayers().get(i).getSignatures().get(j);
+						if (s.getAllMatches() != 0) {
+							try {
+								String fileName = "heroes\\" + s.getHero() + ".jpg";
+								BufferedImage myPicture = ImageIO.read(new File(
+										System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
+								myPicture = resize(myPicture, 128 / 3, 72 / 5 * 2);
+								rows.get(i).getSignatures().get(j).setIcon(new ImageIcon(myPicture));
+							} catch (IOException e) {
+								logger.error("Can not find image for: " +s.getHero(), e);
+							}
 						}
 					}
 					
