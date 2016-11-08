@@ -102,7 +102,7 @@ public class ServerLogParser {
 					}
 					retVal.setStartDate(dateInFile);
 
-					logger.trace("Line in server_log.txt: " + line);
+					//logger.trace("Line in server_log.txt: " + line);
 
 					for (String splittedLine : line.split(" ")) {
 						if (splittedLine.contains(":[U:")) { // splittedLine =
@@ -128,7 +128,7 @@ public class ServerLogParser {
 				throw new RuntimeException("no my steamId");
 			}
 
-			logger.trace("Parsed line in server_log.txt: " + retVal);
+			//logger.trace("Parsed line in server_log.txt: " + retVal);
 
 			return retVal;
 

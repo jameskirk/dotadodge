@@ -3,7 +3,10 @@ package dotalike.core.main;
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +15,11 @@ import com.google.inject.Inject;
 
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
+import dotalike.common.model.external.MatchHistory;
 import dotalike.core.file.ServerLogParser;
 import dotalike.core.misc.Configuration;
-import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.misc.Configuration.ConfigurationKey;
+import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.service.DotaLikeService;
 
 public class DotaLikeEngine {
@@ -48,6 +52,35 @@ public class DotaLikeEngine {
 			match.getPlayers().forEach(e -> playersIds.add(e.getSteamId()));
 			List<Player> players = dotaLikeService.getPlayers(playersIds);
 			match.setPlayers(players);
+			
+			// match history
+			List<MatchHistory> mhList = dotaLikeService.getMatchHistory(playersIds);
+			for (int i = 0; i < playersIds.size(); i++) {
+				mhList.get(i).getPlayer().setNickName(players.get(i).getNickName());
+			}
+			for (MatchHistory mh: mhList) {
+				Map<String, Integer> heroStatistic = new HashMap<>();
+				for (Match m: mh.getMatches()) {
+					String hero = m.getPlayersInMatch().get(0).getHero();
+					if (!heroStatistic.containsKey(hero)) {
+						heroStatistic.put(hero, 1);
+					} else {
+						heroStatistic.put(hero, heroStatistic.get(hero)+1);
+					}
+				}
+				String maxHero = "";
+				Integer maxCount = 0;
+				for (Entry<String, Integer> e: heroStatistic.entrySet()) {
+					if (maxCount < e.getValue()) {
+						maxCount = e.getValue();
+						maxHero = e.getKey();
+					}
+				}
+				if (maxCount != 0) {
+					logger.info("signature: " + mh.getPlayer().getNickName() + ", " 
+							+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
+				}
+			}
 		}
 		return match;
 	}

@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.Vote;
+import dotalike.common.model.external.MatchHistory;
 import dotalike.core.dao.GlobalStatisticDao;
 
 public class DotaLikeServiceImpl implements DotaLikeService {
@@ -39,9 +39,8 @@ public class DotaLikeServiceImpl implements DotaLikeService {
 	}
 
     @Override
-    public List<Match> getMatchHistory(Integer playerId) {
-	// TODO from global
-	return null;
+    public List<MatchHistory> getMatchHistory(List<Integer> playerId) {
+    	return globalStatisticDao.getMatchHistory(playerId);
     }
 
     @Override

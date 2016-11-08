@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import dotalike.common.model.Player;
+import dotalike.common.model.external.MatchHistory;
 import dotalike.common.model.external.Party;
 import dotalike.core.dao.GlobalStatisticDao;
 
@@ -37,4 +38,10 @@ public class SteamGlobalStatisticDaoImpl implements GlobalStatisticDao {
         //TODO make steam connect
         return friendsIdList;
     }
+
+	@Override
+	public List<MatchHistory> getMatchHistory(List<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
