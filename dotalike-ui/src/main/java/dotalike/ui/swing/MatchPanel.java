@@ -55,8 +55,6 @@ public class MatchPanel extends JPanel {
     // Rows
     private List<MatchPanelRow> rows = new ArrayList<>();
     
-    private List<JLabel> lastHeroes = new ArrayList<JLabel>();
-    
     private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
     public MatchPanel() {
@@ -96,6 +94,10 @@ public class MatchPanel extends JPanel {
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 			
 			// 4b. last heroes
+			for (int j=0; j<row.getLastHeroes().size(); j++) {
+				add(row.getLastHeroes().get(j), new GridBagConstraints(3 + j, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+						GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+			}
 			
 			// 5. solo mmr
 		    add(row.getSoloMMR(),  new GridBagConstraints(13, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
@@ -167,14 +169,11 @@ public class MatchPanel extends JPanel {
 						int iHero = 0;
 						for (Match m : match.getPlayers().get(i).getLastMatches()) {
 							String fileName = "heroes\\" + m.getPlayersInMatch().get(0).getHero() + ".jpg";
-							JLabel picLabel = new JLabel();
 							try {
 								BufferedImage myPicture = ImageIO.read(new File(
 										System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
 								myPicture = resize(myPicture, 128 / 3, 72 / 2);
-								picLabel.setIcon(new ImageIcon(myPicture));
-								picLabel.setVisible(false);
-								lastHeroes.add(picLabel);
+								rows.get(i).getLastHeroes().get(iHero).setIcon(new ImageIcon(myPicture));
 							} catch (IIOException e) {
 								logger.error("Can not find image for: " + m.getPlayersInMatch().get(0).getHero(), e);
 							}
@@ -184,9 +183,7 @@ public class MatchPanel extends JPanel {
 							} else {
 								b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
 							}
-							picLabel.setBorder(b);
-							add(picLabel, new GridBagConstraints(3 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
-									GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
+							rows.get(i).getLastHeroes().get(iHero).setBorder(b);
 							iHero++;
 						}
 
@@ -244,7 +241,6 @@ public class MatchPanel extends JPanel {
 	    soloMMRHeader.setVisible(false);
 	    signatureHeader.setVisible(false);
 	    lastHeroesHeader.setVisible(false);
-	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
     }
     
     private void setVisibleForAll() {
@@ -255,7 +251,6 @@ public class MatchPanel extends JPanel {
 		soloMMRHeader.setVisible(true);
 		signatureHeader.setVisible(true);
 		lastHeroesHeader.setVisible(true);
-		lastHeroes.forEach(e -> { e.setVisible(true); } );
     }
     
     private void drawLine(Graphics2D g2, int y) {

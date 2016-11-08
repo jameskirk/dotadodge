@@ -22,6 +22,9 @@ public class MatchPanelRow {
 	public MatchPanelRow() {
 		signatures.add(new JLabel());
 		signatures.add(new JLabel());
+		for (int i=0; i<10; i++) {
+			lastHeroes.add(new JLabel());
+		}
 	}
 	
 	public void clearPanel() {
@@ -37,6 +40,8 @@ public class MatchPanelRow {
 		accountIsPrivate.setForeground(Constants.fontColor);
 	    accountIsPrivate.setVisible(false);
 	    
+	    lastHeroes.forEach(e -> {e.setVisible(false); e.setIcon(null); e.setBorder(null);});
+	    
 	    soloMMR.setVisible(false);
 	    soloMMR.setText("");
 	    soloMMR.setForeground(Constants.fontColor);
@@ -46,6 +51,7 @@ public class MatchPanelRow {
 		nickname.setVisible(true);
 		likeComponent.setVisible(true);
 		signatures.forEach(e -> { e.setVisible(true); });
+		lastHeroes.forEach(e -> {e.setVisible(true);});
 		soloMMR.setVisible(true);
     }
 
