@@ -39,6 +39,7 @@ public class MatchPanel extends JPanel {
     
     private MatchPanelModel model = new MatchPanelModel(new Match());
     
+    // Headers
     private JLabel header = new JLabel("Loading...");
     
     private JLabel firstTeamName = new JLabel("Radiant");
@@ -51,19 +52,10 @@ public class MatchPanel extends JPanel {
     
     private JLabel soloMMRHeader = new JLabel("Solo MMR");
     
-    private List<MatchPanelRow> matchPanelRows = new ArrayList<>();
-    
-    private List<JLabel> players = new ArrayList<JLabel>();
-    
-    private List<JLabel> signatures = new ArrayList<>();
+    // Rows
+    private List<MatchPanelRow> rows = new ArrayList<>();
     
     private List<JLabel> lastHeroes = new ArrayList<JLabel>();
-    
-    private List<JLabel> accountIsPrivateList = new ArrayList<JLabel>();
-    
-    private List<LikeComponent> likeComponents = new ArrayList<>();
-    
-    private List<JLabel> soloMMRs = new ArrayList<JLabel>();
     
     private DotaLikeEngine dotaLikeEngine = GuiceFactory.getInjector().getInstance(DotaLikeEngine.class);
     
@@ -85,35 +77,30 @@ public class MatchPanel extends JPanel {
 		for (int i=0; i<PLAYERS_COUNT; i++) {
 		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
 		    MatchPanelRow row = new MatchPanelRow();
-		    matchPanelRows.add(row);
+		    rows.add(row);
 		    // 1. nickname
-		    JLabel playerName = new JLabel();
-		    players.add(playerName);
-		    add(playerName,  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		    add(row.getNickname(),  new GridBagConstraints(0, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-		    // 2a. like
-		    LikeComponent likeComponent = new LikeComponent();
-			likeComponents.add(likeComponent);
-			likeComponent.setVisible(false);
-			add(likeComponent, new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
+		    // 2. like
+		    row.getLikeComponent().setVisible(false);
+			add(row.getLikeComponent(), new GridBagConstraints(1, gridy, 1, 1, 0, 0, GridBagConstraints.WEST, GridBagConstraints.NONE,
 					new Insets(5, 1, 5, 15), 0, 0));
-			// 2b. label private account
-		    JLabel accountIsPrivate = new JLabel("account is private");
-		    accountIsPrivate.setForeground(Constants.fontColor);
-		    accountIsPrivate.setVisible(false);
-			accountIsPrivateList.add(accountIsPrivate);
-			add(accountIsPrivate,  new GridBagConstraints(3, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
+			// 3. signature
+			for (JLabel s: row.getSignatures()) {
+			    add(s, new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.CENTER,
+			            GridBagConstraints.NONE, new Insets(0, 0, 10, 30), 0, 0));
+			}
+			
+			// 4. label private account
+			add(row.getAccountIsPrivate(),  new GridBagConstraints(3, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
-			// 3. solo mmr
-		    JLabel soloMMR = new JLabel("");
-		    soloMMRs.add(soloMMR);
-		    add(soloMMR,  new GridBagConstraints(13, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+			
+			// 4b. last heroes
+			
+			// 5. solo mmr
+		    add(row.getSoloMMR(),  new GridBagConstraints(13, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 20, 10, 15), 0, 0));
-		    // 4. signature
-		    JLabel signature = new JLabel();
-		    signatures.add(signature);
-		    add(signature,  new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.CENTER,
-		            GridBagConstraints.NONE, new Insets(0, 0, 10, 30), 0, 0));
+		    
 		}
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		clearPanel();
@@ -124,8 +111,6 @@ public class MatchPanel extends JPanel {
 		soloMMRHeader.setForeground(Constants.fontHeaderColor);
 		signatureHeader.setForeground(Constants.fontHeaderColor);
 		lastHeroesHeader.setForeground(Constants.fontHeaderColor);
-		soloMMRs.forEach(e -> e.setForeground(Constants.fontColor));
-		players.forEach(e -> e.setForeground(Constants.fontColor));
 	}
     
     public MatchPanelModel getModel() {
@@ -145,7 +130,6 @@ public class MatchPanel extends JPanel {
 		} else {
 			clearPanel();
 			header.setText("Current match:");
-			players.forEach(e -> e.setForeground(Constants.fontColor));
 			for (int i = 0; i < match.getPlayers().size(); i++) {
 				String name = new Integer(match.getPlayers().get(i).getSteamId()).toString();
 				if (match.getPlayers().get(i) != null) {
@@ -157,7 +141,7 @@ public class MatchPanel extends JPanel {
 						name = name.substring(0, 15);
 					}
 					if (match.getPlayers().get(i).isAccountIsPrivate()) {
-						accountIsPrivateList.get(i).setText("account is private");
+						rows.get(i).getAccountIsPrivate().setVisible(true);
 					}
 
 					int gridy = i + 2 + (i * 2 / PLAYERS_COUNT);
@@ -165,7 +149,7 @@ public class MatchPanel extends JPanel {
 					if (match.getPlayers().get(i).getSoloMmr() != null) {
 						soloMMRText = match.getPlayers().get(i).getSoloMmr().toString();
 					}
-					soloMMRs.get(i).setText(soloMMRText);
+					rows.get(i).getSoloMMR().setText(soloMMRText);
 
 					if (match.getPlayers().get(i).getSignatures().get(0).getAllMatches() != 0) {
 						try {
@@ -173,7 +157,7 @@ public class MatchPanel extends JPanel {
 							BufferedImage myPicture = ImageIO.read(new File(
 									System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
 							myPicture = resize(myPicture, 128 / 3, 72 / 5 * 2);
-							signatures.get(i).setIcon(new ImageIcon(myPicture));
+							rows.get(i).getSignatures().get(0).setIcon(new ImageIcon(myPicture));
 						} catch (IOException e) {
 							logger.error("Can not find image for: " + match.getPlayers().get(i).getSignatures().get(i).getHero(), e);
 						}
@@ -210,9 +194,9 @@ public class MatchPanel extends JPanel {
 						e1.printStackTrace();
 					}
 				}
-				players.get(i).setText(name);
+				rows.get(i).getNickname().setText(name);
 				if (match.getPlayers().get(i).getSteamId() == dotaLikeEngine.getMySteamId()) {
-					players.get(i).setForeground(Constants.fontHeaderColor);
+					rows.get(i).getNickname().setForeground(Constants.fontHeaderColor);
 				}
 			}
 			setVisibleForAll();
@@ -231,14 +215,6 @@ public class MatchPanel extends JPanel {
         return dimg;
     }  
 
-    public List<JLabel> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<JLabel> players) {
-        this.players = players;
-    }
-    
     @Override
     public void paint(Graphics g) {
     	super.paint(g);
@@ -262,31 +238,24 @@ public class MatchPanel extends JPanel {
     private void clearPanel() {
     	header.setText("");
     	header.setVisible(false);
-	    players.forEach(e -> {e.setText(""); e.setVisible(false); });
+    	rows.forEach(e -> e.clearPanel());
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
 	    soloMMRHeader.setVisible(false);
 	    signatureHeader.setVisible(false);
 	    lastHeroesHeader.setVisible(false);
-	    signatures.forEach(e -> { e.setVisible(false); e.setIcon(null);});
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
-	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
-	    accountIsPrivateList.forEach(e -> e.setVisible(false));
-	    soloMMRs.forEach(e -> {e.setText(""); e.setVisible(false); });
     }
     
     private void setVisibleForAll() {
     	header.setVisible(true);
     	firstTeamName.setVisible(true);
 		secondTeamName.setVisible(true);
-		players.forEach(e -> e.setVisible(true));
+		rows.forEach(e -> e.setVisibleForAll());
 		soloMMRHeader.setVisible(true);
 		signatureHeader.setVisible(true);
 		lastHeroesHeader.setVisible(true);
-		signatures.forEach(e -> { e.setVisible(true); });
-		likeComponents.forEach(e -> { e.setVisible(true); } );
 		lastHeroes.forEach(e -> { e.setVisible(true); } );
-		soloMMRs.forEach(e -> e.setVisible(true));
     }
     
     private void drawLine(Graphics2D g2, int y) {

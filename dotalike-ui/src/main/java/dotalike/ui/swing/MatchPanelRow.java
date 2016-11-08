@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 public class MatchPanelRow {
 	
-	private JLabel players = new JLabel();
+	private JLabel nickname = new JLabel();
 	
 	private LikeComponent likeComponent = new LikeComponent();
 	
@@ -15,16 +15,46 @@ public class MatchPanelRow {
 	
 	private List<JLabel> lastHeroes = new ArrayList<JLabel>();
 	
-	private JLabel accountIsPrivate = new JLabel();
+	private JLabel accountIsPrivate = new JLabel("account is private");
 	
 	private JLabel soloMMR = new JLabel();
+	
+	public MatchPanelRow() {
+		signatures.add(new JLabel());
+		signatures.add(new JLabel());
+	}
+	
+	public void clearPanel() {
+		nickname.setVisible(false);
+		nickname.setText("");
+		nickname.setForeground(Constants.fontColor);
+		
+		likeComponent.setVisible(false);
+		likeComponent.clear();
+		
+		signatures.forEach(e -> { e.setVisible(false); e.setIcon(null); });
+		
+		accountIsPrivate.setForeground(Constants.fontColor);
+	    accountIsPrivate.setVisible(false);
+	    
+	    soloMMR.setVisible(false);
+	    soloMMR.setText("");
+	    soloMMR.setForeground(Constants.fontColor);
+    }
+	
+	public void setVisibleForAll() {
+		nickname.setVisible(true);
+		likeComponent.setVisible(true);
+		signatures.forEach(e -> { e.setVisible(true); });
+		soloMMR.setVisible(true);
+    }
 
-	public JLabel getPlayers() {
-		return players;
+	public JLabel getNickname() {
+		return nickname;
 	}
 
-	public void setPlayers(JLabel players) {
-		this.players = players;
+	public void setNickname(JLabel players) {
+		this.nickname = players;
 	}
 
 	public LikeComponent getLikeComponent() {
