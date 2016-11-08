@@ -25,6 +25,7 @@ import com.tulskiy.keymaster.common.Provider;
 
 import dotalike.common.model.Match;
 import dotalike.core.main.DotaLikeEngine;
+import dotalike.core.main.MatchPanelModel;
 import dotalike.core.misc.GuiceFactory;
 import dotalike.core.misc.MatchNotStartedException;
 import dotalike.core.misc.StdOutErrLog;
@@ -70,9 +71,10 @@ public class DotaLike extends JFrame {
 			Match currentMatch;
 			Match previousMatch = matchPanel.getModel().getMatch();
 			try {
-				currentMatch = dotaLikeEngine.getCurrentMatch();
+				MatchPanelModel model = dotaLikeEngine.getCurrentMatch();
+				currentMatch = model.getMatch();
 				if (previousMatch == null || !(currentMatch.getStartDate().equals(previousMatch.getStartDate()))) {
-					matchPanel.setModel(new MatchPanelModel(currentMatch));
+					matchPanel.setModel(model);
 					logger.debug("setting model in matchPanel");
 				}
 			} catch (MatchNotStartedException e) {

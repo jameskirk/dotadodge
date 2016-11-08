@@ -1,12 +1,20 @@
-package dotalike.ui.swing;
+package dotalike.core.main;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dotalike.common.model.Match;
+import dotalike.common.model.external.Signature;
 
 public class MatchPanelModel {
 	
 	private Match match;
 	
 	private String errorMessage;
+	
+	public MatchPanelModel() {
+		super();
+	}
 	
 	public MatchPanelModel(Match match) {
 		super();
@@ -34,7 +42,5 @@ public class MatchPanelModel {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
-	
-	
 
 }

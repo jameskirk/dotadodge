@@ -16,6 +16,7 @@ import com.google.inject.Inject;
 import dotalike.common.model.Match;
 import dotalike.common.model.Player;
 import dotalike.common.model.external.MatchHistory;
+import dotalike.common.model.external.Signature;
 import dotalike.core.file.ServerLogParser;
 import dotalike.core.misc.Configuration;
 import dotalike.core.misc.Configuration.ConfigurationKey;
@@ -43,8 +44,10 @@ public class DotaLikeEngine {
 	//TODO
 	}
 
-	public Match getCurrentMatch() throws MatchNotStartedException, FileNotFoundException, ConnectException {
+	public MatchPanelModel getCurrentMatch() throws MatchNotStartedException, FileNotFoundException, ConnectException {
+		MatchPanelModel retVal = new MatchPanelModel();
 		Match match = serverLogParser.parse();
+		retVal.setMatch(match);
 
 		if (serverLogParser.isNewMatch()) {
 			logger.debug("loading players from service");
@@ -58,7 +61,8 @@ public class DotaLikeEngine {
 			for (int i = 0; i < playersIds.size(); i++) {
 				mhList.get(i).getPlayer().setNickName(players.get(i).getNickName());
 			}
-			for (MatchHistory mh: mhList) {
+			for (int i = 0; i < mhList.size(); i++) {
+				MatchHistory mh = mhList.get(i);
 				Map<String, Integer> heroStatistic = new HashMap<>();
 				for (Match m: mh.getMatches()) {
 					String hero = m.getPlayersInMatch().get(0).getHero();
@@ -80,9 +84,14 @@ public class DotaLikeEngine {
 					logger.info("signature: " + mh.getPlayer().getNickName() + ", " 
 							+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
 				}
+				Signature s = new Signature();
+				s.setHero(maxHero);
+				s.setMatchesWithHero(maxCount);
+				s.setAllMatches(mh.getMatches().size());
+				retVal.getMatch().getPlayers().get(i).getSignatures().add(s);
 			}
 		}
-		return match;
+		return retVal;
 	}
 
 	public DotaLikeService getDotaLikeService() {

@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlType;
 
+import dotalike.common.model.external.Signature;
+
 @Entity
 @XmlType
 public class Player {
@@ -39,6 +41,8 @@ public class Player {
     
     @Transient
     private List<Match> lastMatches = new ArrayList<>();
+    
+    private List<Signature> signatures = new ArrayList<Signature>();
     
     public Player() {
     }
@@ -125,6 +129,14 @@ public class Player {
 
 	public void setAccountIsPrivate(boolean accountIsPrivate) {
 		this.accountIsPrivate = accountIsPrivate;
+	}
+	
+	public List<Signature> getSignatures() {
+		return signatures;
+	}
+
+	public void setSignatures(List<Signature> signatures) {
+		this.signatures = signatures;
 	}
 
 	@Override

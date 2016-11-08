@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import dotalike.common.model.Match;
 import dotalike.core.main.DotaLikeEngine;
+import dotalike.core.main.MatchPanelModel;
 import dotalike.core.misc.GuiceFactory;
 
 public class MatchPanel extends JPanel {
@@ -44,9 +45,17 @@ public class MatchPanel extends JPanel {
     
     private JLabel secondTeamName = new JLabel("Dire");
     
+    private JLabel signatureHeader = new JLabel("Signature");
+    
+    private JLabel lastHeroesHeader = new JLabel("Last matches");
+    
     private JLabel soloMMRHeader = new JLabel("Solo MMR");
     
+    private List<MatchPanelRow> matchPanelRows = new ArrayList<>();
+    
     private List<JLabel> players = new ArrayList<JLabel>();
+    
+    private List<JLabel> signatures = new ArrayList<>();
     
     private List<JLabel> lastHeroes = new ArrayList<JLabel>();
     
@@ -66,11 +75,17 @@ public class MatchPanel extends JPanel {
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
 		add(secondTeamName,  new GridBagConstraints(0, 1 + PLAYERS_COUNT/2 + 1, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 30, 0, 0), 0, 0));
-		add(soloMMRHeader,  new GridBagConstraints(12, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+		add(signatureHeader,  new GridBagConstraints(2, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
 	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		add(lastHeroesHeader,  new GridBagConstraints(3, 1, 10, 1, 0, 0, GridBagConstraints.CENTER,
+	            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
+		add(soloMMRHeader,  new GridBagConstraints(13, 1, 1, 1, 0, 0, GridBagConstraints.WEST,
+	            GridBagConstraints.NONE, new Insets(0, 0, 10, 0), 0, 0));
 		
 		for (int i=0; i<PLAYERS_COUNT; i++) {
 		    int gridy = i + 2 + (i*2/PLAYERS_COUNT);
+		    MatchPanelRow row = new MatchPanelRow();
+		    matchPanelRows.add(row);
 		    // 1. nickname
 		    JLabel playerName = new JLabel();
 		    players.add(playerName);
@@ -87,23 +102,28 @@ public class MatchPanel extends JPanel {
 		    accountIsPrivate.setForeground(Constants.fontColor);
 		    accountIsPrivate.setVisible(false);
 			accountIsPrivateList.add(accountIsPrivate);
-			add(accountIsPrivate,  new GridBagConstraints(2, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
+			add(accountIsPrivate,  new GridBagConstraints(3, gridy, 10, 1, 0, 0, GridBagConstraints.CENTER,
 		            GridBagConstraints.NONE, new Insets(0, 0, 10, 15), 0, 0));
 			// 3. solo mmr
 		    JLabel soloMMR = new JLabel("");
 		    soloMMRs.add(soloMMR);
-		    add(soloMMR,  new GridBagConstraints(12, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+		    add(soloMMR,  new GridBagConstraints(13, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 		            GridBagConstraints.NONE, new Insets(0, 20, 10, 15), 0, 0));
+		    // 4. signature
+		    JLabel signature = new JLabel();
+		    signatures.add(signature);
+		    add(signature,  new GridBagConstraints(2, gridy, 1, 1, 0, 0, GridBagConstraints.CENTER,
+		            GridBagConstraints.NONE, new Insets(0, 0, 10, 30), 0, 0));
 		}
 		setBorder(new EmptyBorder(10, 10, 10, 10));
-		firstTeamName.setVisible(false);
-		secondTeamName.setVisible(false);
-		soloMMRHeader.setVisible(false);
+		clearPanel();
 		setBackground(Constants.frameBackgroundColor);
 		header.setForeground(Constants.fontColor);
 		firstTeamName.setForeground(Constants.fontHeaderColor);
 		secondTeamName.setForeground(Constants.fontHeaderColor);
 		soloMMRHeader.setForeground(Constants.fontHeaderColor);
+		signatureHeader.setForeground(Constants.fontHeaderColor);
+		lastHeroesHeader.setForeground(Constants.fontHeaderColor);
 		soloMMRs.forEach(e -> e.setForeground(Constants.fontColor));
 		players.forEach(e -> e.setForeground(Constants.fontColor));
 	}
@@ -147,6 +167,18 @@ public class MatchPanel extends JPanel {
 					}
 					soloMMRs.get(i).setText(soloMMRText);
 
+					if (match.getPlayers().get(i).getSignatures().get(0).getAllMatches() != 0) {
+						try {
+							String fileName = "heroes\\" + match.getPlayers().get(i).getSignatures().get(0).getHero() + ".jpg";
+							BufferedImage myPicture = ImageIO.read(new File(
+									System.getProperty("user.dir") + "\\src\\main\\resources\\" + fileName));
+							myPicture = resize(myPicture, 128 / 3, 72 / 5 * 2);
+							signatures.get(i).setIcon(new ImageIcon(myPicture));
+						} catch (IOException e) {
+							logger.error("Can not find image for: " + match.getPlayers().get(i).getSignatures().get(i).getHero(), e);
+						}
+					}
+					
 					try {
 						int iHero = 0;
 						for (Match m : match.getPlayers().get(i).getLastMatches()) {
@@ -169,7 +201,7 @@ public class MatchPanel extends JPanel {
 								b = BorderFactory.createMatteBorder(1, 2, 1, 2, Color.RED);
 							}
 							picLabel.setBorder(b);
-							add(picLabel, new GridBagConstraints(2 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
+							add(picLabel, new GridBagConstraints(3 + iHero, gridy, 1, 1, 0, 0, GridBagConstraints.WEST,
 									GridBagConstraints.NONE, new Insets(0, 1, 10, 15), 0, -10));
 							iHero++;
 						}
@@ -234,6 +266,9 @@ public class MatchPanel extends JPanel {
 	    firstTeamName.setVisible(false);
 	    secondTeamName.setVisible(false);
 	    soloMMRHeader.setVisible(false);
+	    signatureHeader.setVisible(false);
+	    lastHeroesHeader.setVisible(false);
+	    signatures.forEach(e -> { e.setVisible(false); e.setIcon(null);});
 	    lastHeroes.forEach(e -> { e.setVisible(false); e.setIcon(null); remove(e);} );
 	    likeComponents.forEach(e -> { e.setVisible(false); e.clear(); } );
 	    accountIsPrivateList.forEach(e -> e.setVisible(false));
@@ -246,6 +281,9 @@ public class MatchPanel extends JPanel {
 		secondTeamName.setVisible(true);
 		players.forEach(e -> e.setVisible(true));
 		soloMMRHeader.setVisible(true);
+		signatureHeader.setVisible(true);
+		lastHeroesHeader.setVisible(true);
+		signatures.forEach(e -> { e.setVisible(true); });
 		likeComponents.forEach(e -> { e.setVisible(true); } );
 		lastHeroes.forEach(e -> { e.setVisible(true); } );
 		soloMMRs.forEach(e -> e.setVisible(true));
