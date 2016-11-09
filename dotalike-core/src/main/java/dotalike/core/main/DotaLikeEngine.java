@@ -63,51 +63,7 @@ public class DotaLikeEngine {
 			}
 			for (int i = 0; i < mhList.size(); i++) {
 				MatchHistory mh = mhList.get(i);
-				Map<String, Integer> heroStatistic = new HashMap<>();
-				for (Match m: mh.getMatches()) {
-					String hero = m.getPlayersInMatch().get(0).getHero();
-					if (!heroStatistic.containsKey(hero)) {
-						heroStatistic.put(hero, 1);
-					} else {
-						heroStatistic.put(hero, heroStatistic.get(hero)+1);
-					}
-				}
-				String maxHero = "";
-				Integer maxCount = 0;
-				for (Entry<String, Integer> e: heroStatistic.entrySet()) {
-					if (maxCount < e.getValue()) {
-						maxCount = e.getValue();
-						maxHero = e.getKey();
-					}
-				}
-				if (maxCount != 0) {
-					logger.info("signature: " + mh.getPlayer().getNickName() + ", " 
-							+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
-				}
-				Signature s = new Signature();
-				s.setHero(maxHero);
-				s.setMatchesWithHero(maxCount);
-				s.setAllMatches(mh.getMatches().size());
-				retVal.getMatch().getPlayers().get(i).getSignatures().add(s);
-				
-				heroStatistic.remove(maxHero);
-				maxHero = "";
-				maxCount = 0;
-				for (Entry<String, Integer> e: heroStatistic.entrySet()) {
-					if (maxCount < e.getValue()) {
-						maxCount = e.getValue();
-						maxHero = e.getKey();
-					}
-				}
-				if (maxCount != 0) {
-					logger.info("signature2: " + mh.getPlayer().getNickName() + ", " 
-							+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
-				}
-				s = new Signature();
-				s.setHero(maxHero);
-				s.setMatchesWithHero(maxCount);
-				s.setAllMatches(mh.getMatches().size());
-				retVal.getMatch().getPlayers().get(i).getSignatures().add(s);
+				retVal.getMatch().getPlayers().get(i).setSignatures(calculateSignatures(mh));
 			}
 		}
 		return retVal;
@@ -120,6 +76,60 @@ public class DotaLikeEngine {
 	public int getMySteamId() {
 		//TODO
 		return 110645196;
+	}
+	
+	private List<Signature> calculateSignatures(MatchHistory mh) {
+		List<Signature> retVal = new ArrayList<>();
+		Map<String, Integer> heroStatistic = new HashMap<>();
+		for (Match m: mh.getMatches()) {
+			String hero = m.getPlayersInMatch().get(0).getHero();
+			if (!heroStatistic.containsKey(hero)) {
+				heroStatistic.put(hero, 1);
+			} else {
+				heroStatistic.put(hero, heroStatistic.get(hero)+1);
+			}
+		}
+		String maxHero = "";
+		Integer maxCount = 0;
+		for (Entry<String, Integer> e: heroStatistic.entrySet()) {
+			if (maxCount < e.getValue()) {
+				maxCount = e.getValue();
+				maxHero = e.getKey();
+			}
+		}
+		if (maxCount != 0) {
+			logger.info("signature: " + mh.getPlayer().getNickName() + ", " 
+					+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
+		}
+		if (maxCount > 7) {
+			Signature s = new Signature();
+			s.setHero(maxHero);
+			s.setMatchesWithHero(maxCount);
+			s.setAllMatches(mh.getMatches().size());
+			retVal.add(s);
+		}
+		
+		heroStatistic.remove(maxHero);
+		maxHero = "";
+		maxCount = 0;
+		for (Entry<String, Integer> e: heroStatistic.entrySet()) {
+			if (maxCount < e.getValue()) {
+				maxCount = e.getValue();
+				maxHero = e.getKey();
+			}
+		}
+		if (maxCount != 0) {
+			logger.info("signature2: " + mh.getPlayer().getNickName() + ", " 
+					+ maxHero + " " + maxCount + "/" + mh.getMatches().size());
+		}
+		if (maxCount > 7) {
+			Signature s = new Signature();
+			s.setHero(maxHero);
+			s.setMatchesWithHero(maxCount);
+			s.setAllMatches(mh.getMatches().size());
+			retVal.add(s);
+		}
+		return retVal;
 	}
 
 }
