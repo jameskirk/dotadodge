@@ -1,5 +1,5 @@
 Programm for dota<br>
-<img src="https://gyazo.com/738d0dd36e64d5263bab70843d438fa0.png" height="70%" width="70%"/>
+<img src="https://gyazo.com/bb545c435d094c84c998abf6dd818039.png" height="70%" width="70%"/>
 
 
 <b>How to run</b>
